@@ -47,17 +47,17 @@ pre{padding:12px;overflow:auto;}
     <h2>Contents</h2>
     <p>This page is organized as follows:
       <ul>
+        <li>Preface</li>
         <li>Summary Video</li>
         <li>Summary Article</li>
       </ul>
-      Summary Video summarizes all the contents of the submitted paper breifly in 15mins -- it's a paraphrase of the submiited paper as video format. 
-      Summary Article is a not just a "paraphrase" of the submitted paper. It covers partially --the two main observations out of four main observations in the submitted paper.
-      Mostly, it is a much more story-like version of the submitted paper -- which is aimed to be written in a way that is easy to understand and follow for any general audience -- to understand what is our research questions, what is our solution, and what is our message to researchers.    
+      The <strong>Summary Video</strong> provides a 7-minute overview of the submitted paper in video format, serving as a concise paraphrase of the complete work.
+      The <strong>Summary Article</strong> is not merely a paraphrase. It does not fully cover the whole paper, but focuses on two main obervations (out of four) of the paper, presenting them in a narrative style designed for general audiences. 
+      The article explains our research questions, solutions, and key messages to the research community.
     </p>
 
     <p>
-      Therefore, we recommend the reader to first take a look at the summary video to grasp what is the paper about at the high level, 
-      and then read the summary article to grasp the main observations of the paper.
+      We recommend first watching the summary video to gain a high-level understanding of the paper, then reading the summary article to explore the main observations in greater detail, then reading the original paper for more technical details.
     </p>
 
 
@@ -66,34 +66,35 @@ pre{padding:12px;overflow:auto;}
 
     <h2>Preface</h2>
 
-    <p>This page is excited to share a somewhat counterintuitive phenomenon- <strong>Orthogonal Alignment</strong>—with the open-world research community (see Figure 1(b)). Before diving in, a brief disclaimer: this phenomenon has so far been observed only in multi-domain recommendation data, so the author remain cautious about generalizing it to vision-language models (or more broadly, to multi-modal learning).</p>
+    <p>We are excited to share a counterintuitive phenomenon—<strong>Orthogonal Alignment</strong>—with the research community (see Figure 1(b)). Before proceeding, we note that this phenomenon has so far been observed only in multi-domain recommendation data. We remain cautious about generalizing it to vision-language models or, more broadly, to multi-modal learning.</p>
 
-    <p>That said, This page is optimistic that Orthogonal Alignment may also appear in vision-language settings, given that our study is grounded in transformer architectures with gated cross-attention—a core component of many modern fusion models. Still, as a researcher, the author want to avoid overgeneralization and therefore frame this observation strictly within the recommendation domain until further studies confirm its presence in vision-language models.</p>
+    <p>That said, we are optimistic that Orthogonal Alignment may also appear in vision-language settings, given that our study is grounded in transformer architectures with gated cross-attention—a core component of many modern fusion models. As researchers, we want to avoid overgeneralization and therefore frame this observation strictly within the recommendation domain until further studies confirm its presence in vision-language models.</p>
 
-    <p>Ultimately, author's hope is that this discovery inspires new ways of thinking about algorithmic design and sheds light on how to achieve better scaling law in multi-modal models.
-    In this post, <strong>the authors want to highlight one simple message</strong>:</p>
+    <p>Ultimately, our hope is that this discovery inspires new ways of thinking about algorithmic design and sheds light on how to achieve better scaling laws in multi-modal models. In this work, <strong>we highlight one key message</strong>:</p>
 
     <div style="border: 2px solid; border-image: linear-gradient(90deg, #667eea, #8b9dc3) 1; border-radius: 10px; padding: 20px; margin: 20px 0; box-shadow: 0 3px 10px rgba(102, 126, 234, 0.08); text-align: center;">
 
-    <p><strong><em>When a multi-modal model exhibits the Orthogonal Alignment phenomenon, it tends to improve scaling law.</em></strong></p>
+    <p><strong><em>When a multi-modal model exhibits the Orthogonal Alignment phenomenon, it tends to improve scaling laws.</em></strong></p>
 
     </div>
 
     <hr>
 
     <h2>Summary Video</h2>
-    <video controls width="100%" style="border: 1px solid var(--border); border-radius: 14px;">
+    <video controls preload="metadata" width="100%" style="border: 1px solid var(--border); border-radius: 14px;">
       <source src="OA_ICML_anonymous.mp4" type="video/mp4">
       Your browser does not support the video tag.
     </video>
     <div class="small">
-      If your browser cannot play the video, you may need to download it or use a different browser by clicking the [materials - video (MP4)] link on the top of the page.
+      If your browser cannot play the video, please try a different browser or download it using the link in the materials section above.
     </div>
     
     <hr>
 
     <h2>Summary Article</h2>
-    <h3>The Rise of Cross-Domain Recommendation Systems</h3>
+    
+    
+    <h3>1.1. The Rise of Cross-Domain Recommendation Systems</h3>
 
     
     <div align="center">
@@ -139,9 +140,8 @@ pre{padding:12px;overflow:auto;}
 
     <p>A widely adopted solution is the <strong>cross-attention</strong> mechanism, which learns to align and project information from different domains into a shared latent space. This allows the model to combine diverse signals and better capture a user's overall intent — even when direct click data is scarce.</p>
 
-    <hr>
 
-    <h2>What Cross-Attention do?: Residual Alignment View</h2>
+    <h3>1.2. What cross-Attention do?: Residual Alignment view</h3>
 
     <p>Despite its popularity, the internal mechanisms of cross-attention across domains remain poorly understood and are largely explored through empirical studies.</p>
 
@@ -163,9 +163,8 @@ pre{padding:12px;overflow:auto;}
 
     </div>
 
-    <hr>
 
-    <h2>Orthogonal Alignment</h2>
+    <h3>2. Orthogonal Alignment</h3>
 
     <p>This work challenges this conventional view and uncovers a new, counter-intuitive mechanism of cross-attention.</p>
 
@@ -195,15 +194,15 @@ pre{padding:12px;overflow:auto;}
 
     <p>Please refer to Figure 1 for a visual illustration of this phenomenon, contrasted with the conventional residual-alignment perspective.</p>
 
-    <h3>What is role of <span style="color: #d62728;"><strong>Y</strong></span> in Orthogonal Alignment?</h3>
+    <!-- <h3>What is role of <span style="color: #d62728;"><strong>Y</strong></span> in Orthogonal Alignment?</h3>
 
     <p>After reading the above definition of Orthogonal Alignment, a natural question arises: "Then, what is the role of <span style="color: #d62728;"><strong>Y</strong></span>?" </p>
 
     <p>My interpretation is that the query <span style="color: #d62728;"><strong>Y</strong></span> functions as a guide that identifies which directions on the tangent space of <span style="color: #1f77b4;"><strong>X</strong></span> correspond to positive transfer signals. More concretely, consider the tangent space of <span style="color: #1f77b4;"><strong>X</strong></span>. Within this space, there exist multiple orthogonal directions—some leading to negative transfer, others contributing to positive transfer. In principle, all of these directions could serve as candidates for <span style="color: #1f77b4;"><strong>X′</strong></span>, since they are orthogonal to the original <span style="color: #1f77b4;"><strong>X</strong></span>. Then, the introduction of <span style="color: #d62728;"><strong>Y</strong></span> provides the crucial signal that distinguishes among these directions—indicating which orthogonal components are constructive (positive transfer) and should therefore be incorporated into <span style="color: #1f77b4;"><strong>X′</strong></span>.</p>
 
-    <p>Intuitively, <span style="color: #d62728;"><strong>Y</strong></span> acts as a directional filter that orients the orthogonal updates toward beneficial regions of the feature manifold, enabling cross-attention to expand representational capacity without amplifying redundant correlations.</p>
+    <p>Intuitively, <span style="color: #d62728;"><strong>Y</strong></span> acts as a directional filter that orients the orthogonal updates toward beneficial regions of the feature manifold, enabling cross-attention to expand representational capacity without amplifying redundant correlations.</p> -->
 
-    <h3>Experiment results.</h3>
+    <h3>3.1. Experiment result 1: Orthogonal Alignment correlates with improving performance</h3>
 
     <p>Empirically, we observe that the Gated Cross-Attention (GCA) module enhances recommendation performance by generating outputs that are not merely filtered versions of the input query(See Figure 2). In simple terms, GCA introduces a learnable gating mechanism that combines the input and the cross-attention output as <span style="color: #1f77b4;"><strong>X</strong></span> + α<span style="color: #1f77b4;"><strong>X'</strong></span>  where <span style="color: #1f77b4;"><strong>X'</strong></span> is the output of cross attention and α is a learnable parameter. This formulation allows the model to produce complementary representations—capturing aspects of the input query that were previously underrepresented or unseen.</p>
 
@@ -238,9 +237,11 @@ pre{padding:12px;overflow:auto;}
 
     </div>
 
-    <hr>
 
-    <h2>Orthogonal Alignment improves scaling law</h2>
+    
+    
+    
+    <h3>3.2. Experiment result 2: Orthogonal Alignment improves scaling law</h3>
 
     <p>Crucially, we classify orthogonal alignment as a <strong>phenomenon</strong> because we empirically show that it <strong>emerges naturally</strong>, without requiring <strong>ANY</strong> explicit orthogonality regularization in either:  Loss formulation or Model architecture. So why this pheomena just naturally happens? This is where this works' main contribution comes from.</p>
 
@@ -272,17 +273,17 @@ pre{padding:12px;overflow:auto;}
         <!-- First row: 3 figures -->
         <tr>
           <td align="center">
-            <img src="./model_comparison_plot_cdsrnp.png" alt="cdsrnp" width="200">
+            <img src="./model_comparison_plot_cdsrnp.png" alt="cdsrnp" width="300">
             <br>
             <em>(a) CDSRNP </em>
           </td>
           <td align="center">
-            <img src="./model_comparison_plot_abxi_abe.png" alt="abxi" width="200">
+            <img src="./model_comparison_plot_abxi_abe.png" alt="abxi" width="300">
             <br>
             <em>(b) ABXI </em>
           </td>
           <td align="center">
-            <img src="./model_comparison_plot_abxi_afk.png" alt="abxi" width="200">
+            <img src="./model_comparison_plot_abxi_afk.png" alt="abxi" width="300">
             <br>
             <em>(c) ABXI </em>
           </td>
@@ -290,12 +291,12 @@ pre{padding:12px;overflow:auto;}
         <!-- Second row: 2 figures -->
         <tr>
           <td align="center">
-            <img src="./model_comparison_plot_llm4cdsr_amazon.png" alt="llm4cdsr" width="200">
+            <img src="./model_comparison_plot_llm4cdsr_amazon.png" alt="llm4cdsr" width="300">
             <br>
             <em>(d) LLM4CDSR </em>
           </td>
           <td align="center">
-            <img src="./model_comparison_plot_llm4cdsr_elec.png" alt="llm4cdsr" width="200">
+            <img src="./model_comparison_plot_llm4cdsr_elec.png" alt="llm4cdsr" width="300">
             <br>
             <em>(e) LLM4CDSR </em>
           </td>
@@ -315,7 +316,9 @@ pre{padding:12px;overflow:auto;}
 
     <p>In contrast, introducing orthogonal alignment through GCA enables more effective information extraction under limited representational capacity. This property allows GCA to achieve a superior accuracy-per-parameter trade-off, demonstrating a more efficient use of model capacity.</p>
 
-    <h2>Concluding Remark: Toward Vision–Language Generalization</h2>
+    
+    
+    <h3>4. Concluding remark: Toward vision–language generalization</h3>
 
     <p>We remain cautious about generalizing our findings to vision–language models, since all of our experiments on Orthogonal Alignment were conducted exclusively with recommendation data. Nonetheless, we are optimistic that similar phenomena could emerge in vision–language settings, given that our study also relies on transformer architectures with gated cross-attention—a core component in many multi-modal models.</p>
 
