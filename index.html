@@ -1,3 +1,4 @@
+<!-- python3 -m http.server 8000 -->
 <!doctype html>
 <html>
 <head>
@@ -31,7 +32,7 @@ pre{padding:12px;overflow:auto;}
     <h1>Cross-attention Performs Orthogonal Alignment in Recommendation Models</h1>
     <div class="box">
       <div><b>Status:</b> Under review (ICML submission)</div>
-      <div><b>Materials:</b> <a href="OA_ICML_anonymous.mp4">video (MP4)</a> · <a href="OA_ICML_anonymous_clean.pdf">slides (PDF)</a></div>
+      <div><b>Materials:</b> <a href="OA_ICML_anonymous_2_subtitle.mp4">video (MP4)</a> · <a href="OA_ICML_anonymous_clean.pdf">slides (PDF)</a></div>
       <div class="small">This page is fully-anonymized for double-blind review. Identifying links and metadata have been strickly removed.</div>
     </div>
 
@@ -47,17 +48,17 @@ pre{padding:12px;overflow:auto;}
     <h2>Contents</h2>
     <p>This page is organized as follows:
       <ul>
+        <li>Preface</li>
         <li>Summary Video</li>
         <li>Summary Article</li>
       </ul>
-      Summary Video summarizes all the contents of the submitted paper breifly in 15mins -- it's a paraphrase of the submiited paper as video format. 
-      Summary Article is a not just a "paraphrase" of the submitted paper. It covers partially --the two main observations out of four main observations in the submitted paper.
-      Mostly, it is a much more story-like version of the submitted paper -- which is aimed to be written in a way that is easy to understand and follow for any general audience -- to understand what is our research questions, what is our solution, and what is our message to researchers.    
+      The <strong>Summary Video</strong> provides a <strong>7-minute</strong> overview of the submitted paper in video format, serving as a concise paraphrase of the complete work.
+      The <strong>Summary Article</strong> is not merely a paraphrase. It <strong>does not</strong> fully cover the whole paper, but focuses on two main obervations (out of four) of the paper, presenting them in a narrative style designed for general audiences. 
+      The article explains our research questions, solutions, and key messages to the research community.
     </p>
 
     <p>
-      Therefore, we recommend the reader to first take a look at the summary video to grasp what is the paper about at the high level, 
-      and then read the summary article to grasp the main observations of the paper.
+      We recommend first watching the summary video to gain a high-level understanding of the paper, then reading the summary article to explore the main observations in greater detail, then reading the original paper for more technical details.
     </p>
 
 
@@ -66,82 +67,100 @@ pre{padding:12px;overflow:auto;}
 
     <h2>Preface</h2>
 
-    <p>This page is excited to share a somewhat counterintuitive phenomenon- <strong>Orthogonal Alignment</strong>—with the open-world research community (see Figure 1(b)). Before diving in, a brief disclaimer: this phenomenon has so far been observed only in multi-domain recommendation data, so the author remain cautious about generalizing it to vision-language models (or more broadly, to multi-modal learning).</p>
+    <p>We are excited to share a counterintuitive phenomenon—<strong>Orthogonal Alignment</strong>—with the research community (see Figure 1(b)). Before proceeding, we note that this phenomenon has so far been observed only in multi-domain recommendation data. We remain cautious about generalizing it to vision-language models or, more broadly, to multi-modal learning.</p>
 
-    <p>That said, This page is optimistic that Orthogonal Alignment may also appear in vision-language settings, given that our study is grounded in transformer architectures with gated cross-attention—a core component of many modern fusion models. Still, as a researcher, the author want to avoid overgeneralization and therefore frame this observation strictly within the recommendation domain until further studies confirm its presence in vision-language models.</p>
+    <p>That said, we are optimistic that Orthogonal Alignment may also appear in vision-language settings, given that our study is grounded in transformer architectures with gated cross-attention—a core component of many modern fusion models. As researchers, we want to avoid overgeneralization and therefore frame this observation strictly within the recommendation domain until further studies confirm its presence in vision-language models.</p>
 
-    <p>Ultimately, author's hope is that this discovery inspires new ways of thinking about algorithmic design and sheds light on how to achieve better scaling law in multi-modal models.
-    In this post, <strong>the authors want to highlight one simple message</strong>:</p>
+    <p>Ultimately, our hope is that this discovery inspires new ways of thinking about algorithmic design and sheds light on how to achieve better scaling laws in multi-modal models. In this work, <strong>we highlight one key message</strong>:</p>
 
     <div style="border: 2px solid; border-image: linear-gradient(90deg, #667eea, #8b9dc3) 1; border-radius: 10px; padding: 20px; margin: 20px 0; box-shadow: 0 3px 10px rgba(102, 126, 234, 0.08); text-align: center;">
 
-    <p><strong><em>When a multi-modal model exhibits the Orthogonal Alignment phenomenon, it tends to improve scaling law.</em></strong></p>
+    <p><strong><em>When a multi-modal model exhibits the Orthogonal Alignment phenomenon, it tends to improve scaling laws.</em></strong></p>
 
     </div>
 
     <hr>
 
     <h2>Summary Video</h2>
-    <video controls width="100%" style="border: 1px solid var(--border); border-radius: 14px;">
-      <source src="OA_ICML_anonymous.mp4" type="video/mp4">
+    <video controls preload="metadata" width="100%" style="border: 1px solid var(--border); border-radius: 14px;">
+      <source src="OA_ICML_anonymous_2_subtitle.mp4" type="video/mp4">
       Your browser does not support the video tag.
     </video>
     <div class="small">
-      If your browser cannot play the video, you may need to download it or use a different browser by clicking the [materials - video (MP4)] link on the top of the page.
+      If your browser cannot play the video, please try a different browser or download it using the link in the materials section above.
     </div>
     
     <hr>
 
     <h2>Summary Article</h2>
-    <h3>The Rise of Cross-Domain Recommendation Systems</h3>
+    
+    
+    <h3>1.1. The Rise of Cross-Domain Recommendation Systems</h3>
 
     
     <div align="center">
       <table>
         <tr>
           <td align="center">
-            <img src="./vector_alignment_3d_left.png" alt="Left view of vector alignment" width="400">
+            <img src="./vector_alignment_3d_left.png" alt="Left view of vector alignment" width="350">
             <br>
             <em>(a) Residual Alignment </em>
           </td>
           <td align="center">
-            <img src="./vector_alignment_3d_right.png" alt="Right view of vector alignment" width="400">
+            <img src="./vector_alignment_3d_right.png" alt="Right view of vector alignment" width="350">
             <br>
-            <em>(b) Orthogonal Alignment </em>
+            <em>(b) <strong>Orthogonal Alignment</strong> </em>
           </td>
+        </tr>
+        <tr>
           <td align="center">
-            <img src="./CA.png" alt="Right view of vector alignment" width="320">
+            <img src="./CA_fig.png" alt="Cross-attention figure" width="200">
             <br>
             <em>(c) Cross-attention</em>
           </td>
+          <td align="center">
+            <img src="./GCA_fig.png" alt="Gated cross-attention figure" width="200">
+            <br>
+            <em>(d) Gated cross-attention</em>
+          </td>
         </tr>
       </table>
-      <em>Figure 1: <strong>Conceptual illustration of Orthogonal Alignment.</strong><br>
-        Given a source representation vector <span style="color: #d62728;"><strong>Y</strong></span> from domain B, suppose the algorithm progressively updates target representation vector <span style="color: #1f77b4;"><strong>X</strong></span> from domain A throughout training iterations {X₁, X₂, ⋯, X′}.<br>
-        <strong>(a) Residual alignment:</strong> The prevailing view of cross-attention is that it refines <span style="color: #1f77b4;"><strong>X</strong></span> by reducing irrelevant and preserving relevant information by referring <span style="color: #d62728;"><strong>Y</strong></span> to update <span style="color: #1f77b4;"><strong>X′</strong></span>.<br>
-        <strong>(b) Orthogonal Alignment:</strong> We observe a complement-discovery phenomenon where <span style="color: #1f77b4;"><strong>X′</strong></span> becomes increasingly orthogonal to <span style="color: #1f77b4;"><strong>X</strong></span> as model performance improves. We show that this orthogonality emerges because cross-attention enables parameter-efficient scaling by extracting complementary information from an orthogonal manifold <span style="color: #1f77b4;"><strong>T(X)</strong></span>, thus enhancing performance without a proportional increase in parameters.<br>
-        (c) <span style="color: #1f77b4;"><strong>X′</strong></span> is the output of cross-attention, with <span style="color: #1f77b4;"><strong>X</strong></span> as the query and <span style="color: #d62728;"><strong>Y</strong></span> as the key and value.</em>
+      <em style="display: block; margin-top: 20px;">Figure 1: <strong>Conceptual illustration of Orthogonal Alignment.</strong>
+        <br>
+        Given a source representation vector <span style="color: #d62728;"><strong>Y</strong></span> from domain B, 
+        suppose the algorithm progressively updates target representation vector <span style="color: #1f77b4;"><strong>X</strong></span> from domain A throughout training iterations {X₁, X₂, ⋯, X′}. 
+        <strong>(a)</strong> Residual alignment:  The prevailing view of cross-attention is that it refines <span style="color: #1f77b4;"><strong>X</strong></span> by reducing irrelevant and preserving relevant information by referring <span style="color: #d62728;"><strong>Y</strong></span> to update <span style="color: #1f77b4;"><strong>X′</strong></span>. 
+        <strong>(b) Orthogonal Alignment:</strong> We observe a complement-discovery phenomenon where <span style="color: #1f77b4;"><strong>X′</strong></span> becomes increasingly orthogonal to <span style="color: #1f77b4;"><strong>X</strong></span> as model performance improves. We show that this orthogonality emerges because cross-attention enables parameter-efficient scaling by extracting complementary information from an orthogonal manifold <span style="color: #1f77b4;"><strong>T(X)</strong></span>, thus enhancing performance without a proportional increase in parameters. 
+        <strong>(c)</strong> <span style="color: #1f77b4;"><strong>X′</strong></span> is the output of cross-attention, with <span style="color: #1f77b4;"><strong>X</strong></span> as the query and <span style="color: #d62728;"><strong>Y</strong></span> as the key and value. 
+        <strong>(d)</strong> <span style="color: #1f77b4;"><strong>X″</strong></span> = <span style="color: #1f77b4;"><strong>X</strong></span> + α<sub>gating</sub> <span style="color: #1f77b4;"><strong>X′</strong></span> is the output of gated cross-attention, where α<sub>gating</sub> is a learnable parameter of the gating module.</em>
     </div>
 
 
 
 
 
-    <p>Imagine you have a dataset D₁=(X₁,Z) and want to build a model that predicts a binary label Z from input X₁. In many real-world cases, the label Z is <em>extremely</em> sparse — meaning that most of the values are just zeros.</p>
+    <p>Imagine you have a dataset D₁=(X₁,Z) and want to build a recommendation model that predicts a binary label Z from input X₁. 
+      In many real-world cases, the label Z is <em>extremely</em> unbalanced (or sparse) — meaning that most of the values are just zeros.</p>
 
-    <p>When the author worked on the Ranking AI Research team at a large-scale industry platform, one of my main tasks was building recommendation models that display sponsored posts (ads) on a social platform and a social platform (If user clicks an ad, that's how a large-scale industry platform earns money💰). The key challenge was data sparsity—users <strong>rarely</strong> clicked on ads, often engaging with only one out of ten sponsored posts, or sometimes none at all. In practice, even though the model continuously recommended posts over every minites -- say, X₁(14:00), X₁(14:01), X₁(14:02), X₁(14:03)..., -- most of these interactions resulted in no clicks, leaving almost all corresponding outcomes as Z = 0.</p>
+    <p>Specifically, let's think about building recommendation models that display sponsored posts (ads) on a social platform. Having a high-accuracy recommendation model is crucial for a large-scale industry platform, as it directly affects the revenue (If user clicks an ad, that's how a large-scale industry platform earns money💰). 
+      However, the key challenge was data imbalance — users <strong>rarely</strong> clicked on ads, often engaging with only one out of ten sponsored posts, or sometimes none at all. 
+      In practice, even though the model continuously recommended posts over every minites -- say, X₁(14:00), X₁(14:01), X₁(14:02), X₁(14:03)..., -- most of these interactions resulted in no clicks, leaving almost all corresponding outcomes as Z = 0.</p>
 
-    <p>Since high-quality recommendations rely on accurately modeling user engagement, this extreme sparsity made it difficult to infer user intent. In other words, simply training on D₁ was not enough to build a truly effective recommendation system.</p>
+    <p>Since high-quality recommendations rely on accurately modeling user engagement, this extreme imbalance made it difficult to infer user intent. 
+      In other words, simply training on D₁ was not enough to build a truly effective recommendation system.</p>
 
-    <p>One effective way to address this problem is to incorporate richer signals from other domains D₂=(X₂,Z) — for example, how long a user stays on which type of post or whether they leave a comment or have shared with others. These additional behavioral cues provide valuable context about user interests and help reduce the impact of sparse labels of other domain D₁.</p>
+    <p>One effective way to address this problem is to incorporate richer (or dense) user-item interaction signals from other domains D₂=(X₂,Z) that may help to grasp user intention. 
+      — for example, how long a user stays on which type of post or whether they leave a comment or have shared with others. 
+      These additional behavioral cues provide valuable context about user interests and help reduce the impact of imbalance labels of other domain D₁.</p>
 
-    <p>This observation motivates a central research problem in multi-modal learning -- <em>developing architectural principles that enable the effective fusion of heterogeneous behavioral modalities</em>.</p>
+    <p>This observation motivates a central research problem in cross-domain recommendation model 
+      -- <em>developing architectural principles that enable the effective fusion of heterogeneous behavioral modalities</em>.</p>
 
-    <p>A widely adopted solution is the <strong>cross-attention</strong> mechanism, which learns to align and project information from different domains into a shared latent space. This allows the model to combine diverse signals and better capture a user's overall intent — even when direct click data is scarce.</p>
+    <p>A widely adopted solution is the <strong>cross-attention</strong> mechanism, which learns to align and project information from different domains into a shared latent space. 
+      This allows the model to combine diverse signals and better capture a user's overall intent — even when direct click data is sparse.</p>
 
-    <hr>
 
-    <h2>What Cross-Attention do?: Residual Alignment View</h2>
+    <h3>1.2. What cross-Attention do?: Residual Alignment view</h3>
 
     <p>Despite its popularity, the internal mechanisms of cross-attention across domains remain poorly understood and are largely explored through empirical studies.</p>
 
@@ -163,9 +182,8 @@ pre{padding:12px;overflow:auto;}
 
     </div>
 
-    <hr>
 
-    <h2>Orthogonal Alignment</h2>
+    <h3>2. Orthogonal Alignment</h3>
 
     <p>This work challenges this conventional view and uncovers a new, counter-intuitive mechanism of cross-attention.</p>
 
@@ -193,19 +211,22 @@ pre{padding:12px;overflow:auto;}
 
     </div>
 
-    <p>Please refer to Figure 1 for a visual illustration of this phenomenon, contrasted with the conventional residual-alignment perspective.</p>
+    <p>Please refer to Figures 1(a) and 1(b) for a visual illustration of this phenomenon, contrasted with the conventional residual-alignment perspective.</p>
 
-    <h3>What is role of <span style="color: #d62728;"><strong>Y</strong></span> in Orthogonal Alignment?</h3>
+    <!-- <h3>What is role of <span style="color: #d62728;"><strong>Y</strong></span> in Orthogonal Alignment?</h3>
 
     <p>After reading the above definition of Orthogonal Alignment, a natural question arises: "Then, what is the role of <span style="color: #d62728;"><strong>Y</strong></span>?" </p>
 
     <p>My interpretation is that the query <span style="color: #d62728;"><strong>Y</strong></span> functions as a guide that identifies which directions on the tangent space of <span style="color: #1f77b4;"><strong>X</strong></span> correspond to positive transfer signals. More concretely, consider the tangent space of <span style="color: #1f77b4;"><strong>X</strong></span>. Within this space, there exist multiple orthogonal directions—some leading to negative transfer, others contributing to positive transfer. In principle, all of these directions could serve as candidates for <span style="color: #1f77b4;"><strong>X′</strong></span>, since they are orthogonal to the original <span style="color: #1f77b4;"><strong>X</strong></span>. Then, the introduction of <span style="color: #d62728;"><strong>Y</strong></span> provides the crucial signal that distinguishes among these directions—indicating which orthogonal components are constructive (positive transfer) and should therefore be incorporated into <span style="color: #1f77b4;"><strong>X′</strong></span>.</p>
 
-    <p>Intuitively, <span style="color: #d62728;"><strong>Y</strong></span> acts as a directional filter that orients the orthogonal updates toward beneficial regions of the feature manifold, enabling cross-attention to expand representational capacity without amplifying redundant correlations.</p>
+    <p>Intuitively, <span style="color: #d62728;"><strong>Y</strong></span> acts as a directional filter that orients the orthogonal updates toward beneficial regions of the feature manifold, enabling cross-attention to expand representational capacity without amplifying redundant correlations.</p> -->
 
-    <h3>Experiment results.</h3>
+    <h3>3.1. Experiment result 1: Orthogonal Alignment correlates with improving performance</h3>
 
-    <p>Empirically, we observe that the Gated Cross-Attention (GCA) module enhances recommendation performance by generating outputs that are not merely filtered versions of the input query(See Figure 2). In simple terms, GCA introduces a learnable gating mechanism that combines the input and the cross-attention output as <span style="color: #1f77b4;"><strong>X</strong></span> + α<span style="color: #1f77b4;"><strong>X'</strong></span>  where <span style="color: #1f77b4;"><strong>X'</strong></span> is the output of cross attention and α is a learnable parameter. This formulation allows the model to produce complementary representations—capturing aspects of the input query that were previously underrepresented or unseen.</p>
+    <p>Empirically, we observe that the Gated Cross-Attention (GCA) module enhances recommendation performance by generating outputs that are not merely filtered versions of the input query (See Figure 2). 
+      In simple terms, GCA introduces a learnable gating mechanism that combines the input and the cross-attention output as 
+      <span style="color: #1f77b4;"><strong>X</strong></span> + α<span style="color: #1f77b4;"><strong>X'</strong></span>  where <span style="color: #1f77b4;"><strong>X'</strong></span> 
+      is the output of cross attention and α is a learnable parameter. This formulation allows the model to produce complementary representations—capturing aspects of the input query that were previously underrepresented or unseen (See Figure 1(d)).</p>
 
     <p>We evaluated this effect using three recent Cross-Domain Sequential Recommendation (CDSR) models: LLM4CDSR¹, CDSRNP², and ABXI³ -- all of which are transformer-based architectures reported as state-of-the-art in their respective papers. In Figure 2, the evaluation metric NDCG@10 (Normalized Discounted Cumulative Gain at rank 10) measures how accurately each model ranks the top 10 items compared with the ground-truth order—that is, how well it predicts both which items should appear and in what order. The x-axis represents the absolute value of the cosine similarity between <span style="color: #1f77b4;"><strong>X</strong></span> and <span style="color: #1f77b4;"><strong>X′</strong></span> for both Domain A and Domain B, where the blue dots correspond to Domain A and the red dots correspond to Domain B.</p>
 
@@ -238,13 +259,20 @@ pre{padding:12px;overflow:auto;}
 
     </div>
 
-    <hr>
 
-    <h2>Orthogonal Alignment improves scaling law</h2>
+    
+    
+    
+    <h3>3.2. Experiment result 2: Orthogonal Alignment improves scaling law</h3>
 
-    <p>Crucially, we classify orthogonal alignment as a <strong>phenomenon</strong> because we empirically show that it <strong>emerges naturally</strong>, without requiring <strong>ANY</strong> explicit orthogonality regularization in either:  Loss formulation or Model architecture. So why this pheomena just naturally happens? This is where this works' main contribution comes from.</p>
+    <p>Crucially, we classify orthogonal alignment as a <strong>phenomenon</strong> because we empirically show that it <strong>emerges naturally</strong>, without requiring <strong>ANY</strong> explicit orthogonality regularization in either:  Loss formulation or Model architecture. 
+      So why this pheomena just naturally happens? 
+    </p>
+    <p>
+      This is where this works' main contribution comes from.
+    </p>
 
-    <p>We argue that this phenomenon improves scaling law in multi-modal model:</p>
+    <p>We argue that this phenomenon improves scaling law in multi-modal model (tested on recommendation data):</p>
 
     <div style="border: 2px solid; border-image: linear-gradient(90deg, #667eea, #8b9dc3) 1; border-radius: 10px; padding: 20px; margin: 20px 0; box-shadow: 0 3px 10px rgba(102, 126, 234, 0.08); text-align: center;">
 
@@ -252,19 +280,21 @@ pre{padding:12px;overflow:auto;}
 
     </div>
 
-    <p>By ensuring that updates occupy subspace orthogonal to the input query, the model gains new representational capacity without needing more parameters.</p>
+    <p>So, intuitively, why does making the input and output orthogonal improve scaling laws? 
+      In simple terms, we interpret this as follows: by ensuring that updates occupy a subspace orthogonal to the input query, the model gains new representational capacity without needing more parameters.</p>
 
-    <p>We compare two approaches:</p>
+    <p>To verify this hypothesis, we compare two model types:</p>
     <ol>
       <li>Baseline + GCA module</li>
       <li>Parameter-augmented baseline (simply increasing parameters)</li>
     </ol>
 
-    <p>For instance, suppose the baseline model has 2 M parameters and the GCA module adds 0.5 M. To make the comparison fair, we also evaluate a parameter-augmented baseline with 2.5 M parameters—matching the total parameter count of the GCA-enhanced model. </p>
+    <p>For instance, suppose the baseline model has 2M parameters and the GCA module adds 0.5M, so the [Baseline + GCA] module has 2.5M parameters. 
+      To make the comparison fair, we also evaluate a [parameter-augmented baseline] with 2.5M parameters—that is, we scale up the 2M baseline to 2.5M by increasing the hidden size, etc., to match the total parameter count of the [Baseline + GCA] module. </p>
 
-    <p><strong>We observed that the Baseline + GCA consistently outperformed the parameter-augmented baseline, demonstrating that the performance gain comes from orthogonal alignment rather than mere model scaling</strong> (see Figure 3).</p>
+    <p><strong>In summary, We observed that the [Baseline + GCA] consistently outperformed the [parameter-augmented baseline], demonstrating that the performance gain comes from orthogonal alignment rather than mere model scaling</strong> (see Figure 3).</p>
 
-    <p>In Figure 3, Baseline + GCA<sub>early</sub> refers to inserting a single GCA module at the early stage of the model, while Baseline + GCA<sub>stack</sub> denotes stacking multiple GCA modules vertically throughout the network—from early to later layers.</p>
+    <p>In Figure 3, [Baseline + GCA]<sub>early</sub> refers to inserting a single GCA module at the early stage of the model, while [Baseline + GCA]<sub>stack</sub> denotes stacking multiple GCA modules vertically throughout the network—from early to later layers.</p>
 
     <div align="center">
 
@@ -272,17 +302,17 @@ pre{padding:12px;overflow:auto;}
         <!-- First row: 3 figures -->
         <tr>
           <td align="center">
-            <img src="./model_comparison_plot_cdsrnp.png" alt="cdsrnp" width="200">
+            <img src="./model_comparison_plot_cdsrnp.png" alt="cdsrnp" width="300">
             <br>
             <em>(a) CDSRNP </em>
           </td>
           <td align="center">
-            <img src="./model_comparison_plot_abxi_abe.png" alt="abxi" width="200">
+            <img src="./model_comparison_plot_abxi_abe.png" alt="abxi" width="300">
             <br>
             <em>(b) ABXI </em>
           </td>
           <td align="center">
-            <img src="./model_comparison_plot_abxi_afk.png" alt="abxi" width="200">
+            <img src="./model_comparison_plot_abxi_afk.png" alt="abxi" width="300">
             <br>
             <em>(c) ABXI </em>
           </td>
@@ -290,12 +320,12 @@ pre{padding:12px;overflow:auto;}
         <!-- Second row: 2 figures -->
         <tr>
           <td align="center">
-            <img src="./model_comparison_plot_llm4cdsr_amazon.png" alt="llm4cdsr" width="200">
+            <img src="./model_comparison_plot_llm4cdsr_amazon.png" alt="llm4cdsr" width="300">
             <br>
             <em>(d) LLM4CDSR </em>
           </td>
           <td align="center">
-            <img src="./model_comparison_plot_llm4cdsr_elec.png" alt="llm4cdsr" width="200">
+            <img src="./model_comparison_plot_llm4cdsr_elec.png" alt="llm4cdsr" width="300">
             <br>
             <em>(e) LLM4CDSR </em>
           </td>
@@ -309,13 +339,12 @@ pre{padding:12px;overflow:auto;}
 
     </div>
 
-    <p>First, our results show that across all five experimental cases, the addition of baseline with GCA_early consistently yields higher single-domain ranking performance (Domain A's NDCG@10) compared to parameter-matched baselines, while Domain B's NDCG@10 also shows general improvement.</p>
+    <p>More specifically, our results show that across all five experimental cases, the addition of baseline with GCA_early consistently yields higher single-domain ranking performance (Domain A's NDCG@10) compared to parameter-matched baselines, while Domain B's NDCG@10 also shows general improvement.</p>
 
     <p>Moreover, in both LLM4CDSR settings, GCA<sub>early</sub> demonstrates the strongest parameter efficiency. We attribute this advantage to the fixed hidden dimensionality of the initial embedding vectors inherited from the pretrained LLM, which constrains the representational capacity of the baseline model. As a result, simply scaling up the baseline parameters eventually leads to performance saturation—and in some cases, degradation—as model size increases.</p>
-
-    <p>In contrast, introducing orthogonal alignment through GCA enables more effective information extraction under limited representational capacity. This property allows GCA to achieve a superior accuracy-per-parameter trade-off, demonstrating a more efficient use of model capacity.</p>
-
-    <h2>Concluding Remark: Toward Vision–Language Generalization</h2>
+    
+    
+    <h3>4. Concluding remark: Toward vision–language generalization</h3>
 
     <p>We remain cautious about generalizing our findings to vision–language models, since all of our experiments on Orthogonal Alignment were conducted exclusively with recommendation data. Nonetheless, we are optimistic that similar phenomena could emerge in vision–language settings, given that our study also relies on transformer architectures with gated cross-attention—a core component in many multi-modal models.</p>
 
