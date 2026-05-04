@@ -186,7 +186,7 @@ video{
         <li>Summary Paper</li>
       </ul>
       The <strong>Summary Video</strong> is a <strong>7-minute</strong> high-level introduction designed for general audiences. It highlights selected key observations, but <strong>does not cover the full paper</strong>.
-      The <strong>Summary Paper</strong>, in contrast, provides a full walkthrough of the submission, including the research questions, methodology, theoretical analysis, and main conclusions.
+      The <strong>Summary Paper</strong> provides a full walkthrough of the submitted paper, including the research questions, methodology, theoretical analysis, and main conclusions.
     </p>
 
     <p>
@@ -290,6 +290,12 @@ video{
       <li>Data: Amazon cross-domain recommendation pairs.</li>
       <li>Metrics: NDCG@1, NDCG@10, and AUC across both domains.</li>
     </ul>
+    <div align="center" style="margin: 14px 0 10px 0;">
+      <img src="./GCA_architecture.png" alt="GCA module placement architecture across model depth" style="width:100%; max-width:900px;">
+      <p class="small" style="margin-top:10px;">
+        <em>Figure 2. For each baseline model, we insert \(\mathrm{GCA}\) modules at multiple vertical positions, denoted as \(\mathrm{GCA}[i]\), where \(i=0\) corresponds to the module closest to the raw data and \(i=N\) to the module farthest from the raw data. By design, \(\mathrm{GCA}[0]\) is always placed immediately after the embedding layer, while \(\mathrm{GCA}[1], \mathrm{GCA}[2], \ldots\) are positioned within intermediate layers of the backbone. Each \(\mathrm{GCA}[i]\) comprises two parallel gated cross-attention modules, which respectively refine the representations of domains \(A\) and \(B\).</em>
+      </p>
+    </div>
 
     <h3>4.1 Observation 1: early GCA improves ranking</h3>
     <p>Adding <strong>GCA at early layers</strong> consistently improves ranking metrics across the three backbones. The paper reports substantial relative NDCG gains, while also noting that deeper stacking can introduce trade-offs and does not guarantee monotonic improvement.</p>
