@@ -6,32 +6,166 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Anonymous Project Page</title>
   <style>
-:root{--bg:#ffffff;--fg:#111;--muted:#555;--box:#fafafa;--border:#eaeaea;--link:#0b5fff;}
+:root{
+  --bg:#f4f5f7; --fg:#111; --muted:#555; --box:#fafafa; --border:#e6e7eb; --link:#0b5fff;
+  --accent1:#6f82f2; --accent2:#a2b0dc;
+  --glass:rgba(255,255,255,0.66);
+  --glass-strong:rgba(255,255,255,0.78);
+  --glass-border:rgba(255,255,255,0.55);
+  --glass-shadow:0 12px 30px rgba(15,23,42,0.10);
+}
 @media (prefers-color-scheme: dark){
-  :root{--bg:#0b0b0b;--fg:#f2f2f2;--muted:#b5b5b5;--box:#131313;--border:#2a2a2a;--link:#6aa6ff;}
+  :root{
+    --bg:#090b10; --fg:#eef2ff; --muted:#b8bfd8; --box:#131826; --border:#2a334a; --link:#7aa7ff;
+    --accent1:#8ea1ff; --accent2:#b9c6ef;
+    --glass:rgba(20,25,38,0.62);
+    --glass-strong:rgba(20,25,38,0.78);
+    --glass-border:rgba(153,170,255,0.22);
+    --glass-shadow:0 14px 36px rgba(0,0,0,0.42);
+  }
 }
 body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-     background:var(--bg);color:var(--fg);line-height:1.6;margin:0;}
+     background:
+     radial-gradient(circle at 8% -12%, rgba(111,130,242,0.22), transparent 33%),
+     radial-gradient(circle at 96% 14%, rgba(162,176,220,0.24), transparent 30%),
+     radial-gradient(circle at 60% 120%, rgba(111,130,242,0.10), transparent 35%),
+     var(--bg);
+     color:var(--fg);line-height:1.6;margin:0;scroll-behavior:smooth;}
 .container{max-width:980px;margin:40px auto;padding:0 18px;}
-h1{font-size:2.0rem;margin:0 0 8px 0;}
+h1{
+  font-size:2.0rem;margin:0 0 8px 0;
+  background:linear-gradient(90deg,var(--fg),color-mix(in oklab,var(--fg) 74%, var(--accent1)));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  letter-spacing:-0.01em;
+}
 h2{margin-top:32px;}
 a{color:var(--link);text-decoration:none;}
 a:hover{text-decoration:underline;}
-.box{background:var(--box);border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin:16px 0;}
+.box{
+  background:var(--glass);
+  backdrop-filter:blur(18px) saturate(140%);
+  -webkit-backdrop-filter:blur(18px) saturate(140%);
+  border:1px solid var(--glass-border);
+  border-radius:14px;padding:14px 16px;margin:16px 0;
+  box-shadow:var(--glass-shadow);
+}
 .small{color:var(--muted);font-size:0.95rem;}
 .nav{display:flex;gap:14px;flex-wrap:wrap;margin-top:8px;margin-bottom:14px}
 iframe{width:100%;height:820px;border:1px solid var(--border);border-radius:14px;}
-hr{border:none;border-top:1px solid var(--border);margin:28px 0;}
-img{max-width:100%;height:auto;border-radius:10px;border:1px solid var(--border);}
-code, pre{background:var(--box);border:1px solid var(--border);border-radius:10px;}
+hr{border:none;height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:28px 0;}
+img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--glass-border);box-shadow:0 10px 24px rgba(0,0,0,.08);}
+code, pre{
+  background:var(--glass);
+  border:1px solid var(--glass-border);
+  border-radius:10px;
+  backdrop-filter:blur(12px) saturate(130%);
+  -webkit-backdrop-filter:blur(12px) saturate(130%);
+}
 pre{padding:12px;overflow:auto;}
+table{
+  background:var(--glass);
+  border:1px solid var(--glass-border);
+  border-radius:12px;
+  overflow:hidden;
+  backdrop-filter:blur(12px) saturate(130%);
+  -webkit-backdrop-filter:blur(12px) saturate(130%);
+}
+video{
+  background:var(--glass);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+}
+.box, table, video{transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease;}
+.box:hover, table:hover, video:hover{transform:translateY(-1px); box-shadow:0 14px 28px rgba(111,130,242,0.16); border-color:color-mix(in oklab,var(--glass-border) 70%, var(--accent1));}
+
+/* Fancy scrolling UI */
+#scroll-progress{
+  position:fixed; top:0; left:0; height:4px; width:0%;
+  background:linear-gradient(90deg,var(--accent1),var(--accent2));
+  z-index:9999; box-shadow:0 1px 8px rgba(102,126,234,.4);
+}
+#back-to-top{
+  position:fixed; right:22px; bottom:24px; z-index:9998;
+  width:42px; height:42px; border-radius:999px; border:1px solid var(--glass-border);
+  background:var(--glass-strong); color:var(--fg); cursor:pointer; font-size:18px;
+  backdrop-filter:blur(16px) saturate(140%); -webkit-backdrop-filter:blur(16px) saturate(140%);
+  box-shadow:var(--glass-shadow); opacity:0; pointer-events:none;
+  transform:translateY(8px); transition:all .2s ease;
+}
+#back-to-top.show{opacity:1; pointer-events:auto; transform:translateY(0);}
+#back-to-top:hover{background:linear-gradient(90deg,var(--accent1),var(--accent2)); color:#fff;}
+#floating-toc{
+  position:fixed; right:14px; top:84px; z-index:9997; width:230px; max-height:70vh; overflow:auto;
+  border:1px solid var(--glass-border); border-radius:12px; background:var(--glass-strong);
+  backdrop-filter:blur(18px) saturate(140%); -webkit-backdrop-filter:blur(18px) saturate(140%);
+  padding:10px 10px 8px; box-shadow:var(--glass-shadow);
+}
+#floating-toc .toc-title{font-size:.78rem; color:var(--muted); margin:0 0 6px 2px; letter-spacing:.03em; text-transform:uppercase;}
+#floating-toc a{display:block; font-size:.82rem; color:var(--fg); opacity:.85; padding:4px 6px; border-radius:6px; text-decoration:none; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+#floating-toc a:hover{background:rgba(102,126,234,.12); opacity:1;}
+#floating-toc a.active{background:linear-gradient(90deg, rgba(102,126,234,.22), rgba(139,157,195,.16)); opacity:1; font-weight:600;}
+#floating-toc a.h3{padding-left:16px; font-size:.78rem;}
+.reveal{opacity:0; transform:translateY(12px); transition:opacity .45s ease, transform .45s ease;}
+.reveal.is-visible{opacity:1; transform:translateY(0);}
+@media (max-width: 1200px){#floating-toc{display:none;}}
+.pulse-highlight{
+  display:inline-block;
+  padding:0 2px;
+  border-radius:3px;
+  will-change:transform, box-shadow, filter;
+}
+.pulse-blue{
+  background-color:#cfe8ff;
+  animation:pulseBlue 1.9s ease-in-out infinite;
+}
+.pulse-red{
+  background-color:#ffd6d6;
+  animation:pulseRed 1.9s ease-in-out infinite;
+}
+.pulse-yellow{
+  background-color:#fff59d;
+  animation:pulseYellow 1.9s ease-in-out infinite;
+}
+@keyframes pulseBlue{
+  0%,100%{transform:scale(1); box-shadow:0 0 0 rgba(111,130,242,0);}
+  50%{transform:scale(1.035); box-shadow:0 0 14px rgba(111,130,242,0.35);}
+}
+@keyframes pulseRed{
+  0%,100%{transform:scale(1); box-shadow:0 0 0 rgba(255,102,122,0);}
+  50%{transform:scale(1.035); box-shadow:0 0 14px rgba(255,102,122,0.33);}
+}
+@keyframes pulseYellow{
+  0%,100%{transform:scale(1); box-shadow:0 0 0 rgba(255,214,77,0);}
+  50%{transform:scale(1.035); box-shadow:0 0 14px rgba(255,214,77,0.42);}
+}
+@media (prefers-reduced-motion: reduce){
+  .reveal,.reveal.is-visible{opacity:1; transform:none; transition:none;}
+  .pulse-blue,.pulse-red,.pulse-yellow{animation:none;}
+  body{scroll-behavior:auto;}
+}
 </style>
+<script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [['\\(', '\\)'], ['$', '$']],
+      displayMath: [['\\[', '\\]']]
+    },
+    svg: { fontCache: 'global' }
+  };
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
 </head>
 <body>
+  <div id="scroll-progress"></div>
+  <aside id="floating-toc" aria-label="Section navigation">
+    <p class="toc-title">On this page</p>
+    <div id="toc-links"></div>
+  </aside>
+  <button id="back-to-top" aria-label="Back to top">↑</button>
   <div class="container">
-    <h1>Cross-attention Performs Orthogonal Alignment in Recommendation Models</h1>
+    <h1>Gated cross-attention Performs Orthogonal Alignment in Recommendation Models</h1>
     <div class="box">
-      <div><b>Status:</b> Under review (ICML submission)</div>
+      <div><b>Status:</b> Under review (NeurIPS 2026 submission)</div>
       <div><b>Materials:</b> <a href="OA_ICML_anonymous_2_subtitle.mp4">video (MP4)</a> · <a href="OA_ICML_anonymous_clean.pdf">slides (PDF)</a></div>
       <div class="small">This page is fully-anonymized for double-blind review. Identifying links and metadata have been strickly removed.</div>
     </div>
@@ -48,12 +182,10 @@ pre{padding:12px;overflow:auto;}
     <h2>Contents</h2>
     <p>This page is organized as follows:
       <ul>
-        <li>Preface</li>
         <li>Summary Video</li>
         <li>Summary Article</li>
       </ul>
-      The <strong>Summary Video</strong> provides a <strong>7-minute</strong> overview of the submitted paper in video format, serving as a concise paraphrase of the complete work.
-      The <strong>Summary Article</strong> is not merely a paraphrase. It <strong>does not</strong> fully cover the whole paper, but focuses on two main obervations (out of four) of the paper, presenting them in a narrative style designed for general audiences. 
+      The <strong>Summary Video</strong> provides a <strong>7-minute</strong> overview of the submitted paper in video format, serving as a concise paraphrase of the complete work. It <strong>does not</strong> fully cover the whole paper, but focuses on two main obervations (out of four) of the paper, presenting them in a narrative style designed for general audiences. 
       The article explains our research questions, solutions, and key messages to the research community.
     </p>
 
@@ -61,23 +193,6 @@ pre{padding:12px;overflow:auto;}
       We recommend first watching the summary video to gain a high-level understanding of the paper, then reading the summary article to explore the main observations in greater detail, then reading the original paper for more technical details.
     </p>
 
-
-    <hr>
-
-
-    <h2>Preface</h2>
-
-    <p>We are excited to share a counterintuitive phenomenon—<strong>Orthogonal Alignment</strong>—with the research community (see Figure 1(b)). Before proceeding, we note that this phenomenon has so far been observed only in multi-domain recommendation data. We remain cautious about generalizing it to vision-language models or, more broadly, to multi-modal learning.</p>
-
-    <p>That said, we are optimistic that Orthogonal Alignment may also appear in vision-language settings, given that our study is grounded in transformer architectures with gated cross-attention—a core component of many modern fusion models. As researchers, we want to avoid overgeneralization and therefore frame this observation strictly within the recommendation domain until further studies confirm its presence in vision-language models.</p>
-
-    <p>Ultimately, our hope is that this discovery inspires new ways of thinking about algorithmic design and sheds light on how to achieve better scaling laws in multi-modal models. In this work, <strong>we highlight one key message</strong>:</p>
-
-    <div style="border: 2px solid; border-image: linear-gradient(90deg, #667eea, #8b9dc3) 1; border-radius: 10px; padding: 20px; margin: 20px 0; box-shadow: 0 3px 10px rgba(102, 126, 234, 0.08); text-align: center;">
-
-    <p><strong><em>When a multi-modal model exhibits the Orthogonal Alignment phenomenon, it tends to improve scaling laws.</em></strong></p>
-
-    </div>
 
     <hr>
 
@@ -94,9 +209,10 @@ pre{padding:12px;overflow:auto;}
 
     <h2>Summary Article</h2>
     
-    
-    <h3>1.1. The Rise of Cross-Domain Recommendation Systems</h3>
-
+    <h3>1. Why this paper exists</h3>
+    <p>Cross-domain sequential recommendation (CDSR) combines user behavior from multiple domains (for example, electronics and books) to improve next-item prediction. This is difficult because domain signals can be noisy, redundant, or even conflicting.</p>
+    <p>The standard tool is cross-attention. The common interpretation of cross-attention's role is <strong>residual alignment</strong>: cross-attention mostly filters noise and keeps information that is already aligned with the query representation.</p>
+    <p>This paper argues that this view is incomplete. The core claim is that gated cross-attention can also discover <strong>complementary information in an orthogonal subspace</strong>, and that this behavior is directly related to better ranking performance and better parameter efficiency.</p>
     
     <div align="center">
       <table>
@@ -134,106 +250,235 @@ pre{padding:12px;overflow:auto;}
         <strong>(c)</strong> <span style="color: #1f77b4;"><strong>X′</strong></span> is the output of cross-attention, with <span style="color: #1f77b4;"><strong>X</strong></span> as the query and <span style="color: #d62728;"><strong>Y</strong></span> as the key and value. 
         <strong>(d)</strong> <span style="color: #1f77b4;"><strong>X″</strong></span> = <span style="color: #1f77b4;"><strong>X</strong></span> + α<sub>gating</sub> <span style="color: #1f77b4;"><strong>X′</strong></span> is the output of gated cross-attention, where α<sub>gating</sub> is a learnable parameter of the gating module.</em>
     </div>
+    <h3>2. Main idea: Orthogonal Alignment</h3>
+    <p>Let <span style="color: #1f77b4;"><strong>X</strong></span> be the query representation entering cross-attention and <span style="color: #1f77b4;"><strong>X'</strong></span> be the raw cross-attended update. The paper defines <strong>Orthogonal Alignment</strong> as the follows</p>
 
+    <div style="margin: 24px 0; border-radius: 14px; overflow: hidden; border: 1px solid var(--border); box-shadow: 0 10px 24px rgba(102, 126, 234, 0.14);">
+      <div style="background: linear-gradient(90deg, #667eea, #8b9dc3); color: #fff; padding: 12px 18px; font-weight: 700; letter-spacing: 0.2px;">
+        Definition: Orthogonal Alignment
+      </div>
+      <div style="padding: 16px; background: linear-gradient(180deg, rgba(102, 126, 234, 0.06), rgba(139, 157, 195, 0.03));">
+        <div style="background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; text-align: center;">
+          <p style="margin: 0;"><strong><em>An Orthogonal Alignment is a phenomenon where the input query (<span style="color: #1f77b4;"><strong>X</strong></span>) and the cross-attention output (<span style="color: #1f77b4;"><strong>X&#8242;</strong></span>) become orthogonal, rather than simply reinforcing pre-aligned features of <span style="color: #1f77b4;"><strong>X</strong></span> when updating to <span style="color: #1f77b4;"><strong>X&#8242;</strong></span>.</em></strong></p>
+        </div>
+      </div>
+    </div>
 
+    <p>In the gated module, the update is injected as a gated residual term and then normalized. We found that in end-to-end trainig, the orthgonal alignment naturally emerges without any explicit orthogonality regularization in either:  Loss formulation or Model architecture. We further observer that orthgonal alignment is causually associated with performance gains. We are curious on why this phenomenon naturally emerges in the model.
+      One of our main contributions is to show that orthogonal alignment is a causal driver of performance gains, and one plausible reason it emerges naturally is its parameter-efficient use of representational capacity. 
+    </p>
 
+    <div style="margin: 24px 0; border-radius: 14px; overflow: hidden; border: 1px solid var(--border); box-shadow: 0 10px 24px rgba(102, 126, 234, 0.14);">
+      <div style="background: linear-gradient(90deg, #667eea, #8b9dc3); color: #fff; padding: 12px 18px; font-weight: 700; letter-spacing: 0.2px;">
+        Key Claims
+      </div>
+      <div style="padding: 16px; background: linear-gradient(180deg, rgba(102, 126, 234, 0.06), rgba(139, 157, 195, 0.03));">
+        <div style="background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; margin-bottom: 10px;">
+          <strong>Claim 1.</strong> Orthogonal alignment is a causal driver of performance gains.
+        </div>
+        <div style="background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px;">
+          <strong>Claim 2.</strong> A plausible reason it emerges naturally is its parameter-efficient use of representational capacity.
+        </div>
+      </div>
+    </div>
 
-
-    <p>Imagine you have a dataset D₁=(X₁,Z) and want to build a recommendation model that predicts a binary label Z from input X₁. 
-      In many real-world cases, the label Z is <em>extremely</em> unbalanced (or sparse) — meaning that most of the values are just zeros.</p>
-
-    <p>Specifically, let's think about building recommendation models that display sponsored posts (ads) on a social platform. Having a high-accuracy recommendation model is crucial for a large-scale industry platform, as it directly affects the revenue (If user clicks an ad, that's how a large-scale industry platform earns money💰). 
-      However, the key challenge was data imbalance — users <strong>rarely</strong> clicked on ads, often engaging with only one out of ten sponsored posts, or sometimes none at all. 
-      In practice, even though the model continuously recommended posts over every minites -- say, X₁(14:00), X₁(14:01), X₁(14:02), X₁(14:03)..., -- most of these interactions resulted in no clicks, leaving almost all corresponding outcomes as Z = 0.</p>
-
-    <p>Since high-quality recommendations rely on accurately modeling user engagement, this extreme imbalance made it difficult to infer user intent. 
-      In other words, simply training on D₁ was not enough to build a truly effective recommendation system.</p>
-
-    <p>One effective way to address this problem is to incorporate richer (or dense) user-item interaction signals from other domains D₂=(X₂,Z) that may help to grasp user intention. 
-      — for example, how long a user stays on which type of post or whether they leave a comment or have shared with others. 
-      These additional behavioral cues provide valuable context about user interests and help reduce the impact of imbalance labels of other domain D₁.</p>
-
-    <p>This observation motivates a central research problem in cross-domain recommendation model 
-      -- <em>developing architectural principles that enable the effective fusion of heterogeneous behavioral modalities</em>.</p>
-
-    <p>A widely adopted solution is the <strong>cross-attention</strong> mechanism, which learns to align and project information from different domains into a shared latent space. 
-      This allows the model to combine diverse signals and better capture a user's overall intent — even when direct click data is sparse.</p>
-
-
-    <h3>1.2. What cross-Attention do?: Residual Alignment view</h3>
-
-    <p>Despite its popularity, the internal mechanisms of cross-attention across domains remain poorly understood and are largely explored through empirical studies.</p>
-
-    <p>So far, current research views cross-attention as enabling one domain (<span style="color: #1f77b4;"><strong>X</strong></span> in Figure 1c) to query another (<span style="color: #d62728;"><strong>Y</strong></span> in Figure 1c) and integrate only the most relevant information (<span style="color: #1f77b4;"><strong>X'</strong></span> as a weighted sum of <span style="color: #d62728;"><strong>Y</strong></span> in Figure 1c).</p>
-
-    <p>A growing body of empirical evidence supports this view, especially in various multi-modal models:</p>
-
+    <h3>3. Experimental setup (pages 3-4)</h3>
     <ul>
-      <li>In text-to-image diffusion, cross-attention maps reveal faithful token-to-region correspondences, acting as denoising and relevance filters rather than as indiscriminate fusion.</li>
-      <li>In representation disentanglement, cross-attention functions as an inductive bias, promoting the separation of complementary factors and encouraging aligned, non-redundant representations.</li>
-      <li>In vision-language model, studies aligning attention maps with human gaze patterns show that effective cross-attention concentrates on causally relevant regions, confirming its selective filtering behavior.</li>
+      <li>Baselines: <strong>CDSRNP</strong>, <strong>ABXI</strong>, and <strong>LLM4CDSR</strong>.</li>
+      <li>Module: a gated cross-attention (GCA) block inserted at different vertical depths.</li>
+      <li>Placement notation: <strong>GCA[0]</strong> (early insertion) and stacked variants (multiple insertions).</li>
+      <li>Data: Amazon cross-domain recommendation pairs.</li>
+      <li>Metrics: NDCG@1, NDCG@10, and AUC across both domains.</li>
     </ul>
 
-    <p>Therefore, understanding cross-attention as a <strong>"residual alignment"</strong> mechanism is the prevalent interpretation within the research community.</p>
+    <h3>4.1 Observation 1: early GCA improves ranking</h3>
+    <p>Adding <strong>GCA at early layers</strong> consistently improves ranking metrics across the three backbones. The paper reports substantial relative NDCG gains, while also noting that deeper stacking can introduce trade-offs and does not guarantee monotonic improvement.</p>
+    <p>An important nuance is that NDCG and AUC behavior is architecture-dependent: some settings show stronger top-rank gains with possible AUC degradation, indicating different precision-discrimination trade-offs.</p>
+    <div style="overflow-x: auto; border: 1px solid var(--border); border-radius: 12px; padding: 6px; background: var(--box); margin: 18px 0 8px 0; font-size: 0.78rem; line-height: 1.28;">
+      <table style="width: 100%; border-collapse: collapse; min-width: 900px;">
+        <thead>
+          <tr>
+            <th style="text-align:left; padding:8px; border-bottom:1px solid var(--border);">Model</th>
+            <th style="text-align:left; padding:8px; border-bottom:1px solid var(--border);">Dataset (A-B)</th>
+            <th style="text-align:left; padding:8px; border-bottom:1px solid var(--border);">NDCG@1<sub>A</sub></th>
+            <th style="text-align:left; padding:8px; border-bottom:1px solid var(--border);">NDCG@10<sub>A</sub></th>
+            <th style="text-align:left; padding:8px; border-bottom:1px solid var(--border);">NDCG@1<sub>B</sub></th>
+            <th style="text-align:left; padding:8px; border-bottom:1px solid var(--border);">NDCG@10<sub>B</sub></th>
+            <th style="text-align:left; padding:8px; border-bottom:1px solid var(--border);">AUC<sub>A</sub></th>
+            <th style="text-align:left; padding:8px; border-bottom:1px solid var(--border);">AUC<sub>B</sub></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">LLM4CDSR</td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">Cloth-Sport</td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.7157 <span style="font-size:0.72em;">&plusmn;0.0025</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.7821 <span style="font-size:0.72em;">&plusmn;0.0018</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.5870 <span style="font-size:0.72em;">&plusmn;0.0051</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.6493 <span style="font-size:0.72em;">&plusmn;0.0020</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.9216 <span style="font-size:0.72em;">&plusmn;0.0013</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.8621 <span style="font-size:0.72em;">&plusmn;0.0054</span></td>
+          </tr>
+          <tr>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">+gca<sub>early</sub></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);"></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.7283 <span style="font-size:0.72em;">&plusmn;0.0027</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.8052 <span style="font-size:0.72em;">&plusmn;0.0014</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.5977 <span style="font-size:0.72em;">&plusmn;0.0054</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.6560 <span style="font-size:0.72em;">&plusmn;0.0046</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.9364 <span style="font-size:0.72em;">&plusmn;0.0009</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.8655 <span style="font-size:0.72em;">&plusmn;0.0038</span></td>
+          </tr>
+          <tr>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">+gca<sub>stack</sub></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);"></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.7310 <span style="font-size:0.72em;">&plusmn;0.0012</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.8056 <span style="font-size:0.72em;">&plusmn;0.0014</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.6112 <span style="font-size:0.72em;">&plusmn;0.0032</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.6638 <span style="font-size:0.72em;">&plusmn;0.0038</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.9370 <span style="font-size:0.72em;">&plusmn;0.0010</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.8664 <span style="font-size:0.72em;">&plusmn;0.0030</span></td>
+          </tr>
 
-    <div style="border: 2px solid; border-image: linear-gradient(90deg, #667eea, #8b9dc3) 1; border-radius: 10px; padding: 20px; margin: 20px 0; box-shadow: 0 3px 10px rgba(102, 126, 234, 0.08); text-align: center;">
+          <tr><td colspan="8" style="padding:4px; border-bottom:1px solid var(--border);"></td></tr>
 
-    <p>Current research interprets cross-attention as primarily a <strong>residual alignment</strong> mechanism, where the output (<span style="color: #1f77b4;"><strong>X′</strong></span>) is generated by removing redundant information and preserveing relevant content from the input (<span style="color: #1f77b4;"><strong>X</strong></span>) by referencing another domain (<span style="color: #d62728;"><strong>Y</strong></span>).</p>
+          <tr>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">LLM4CDSR</td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">Elec-Phone</td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.2101 <span style="font-size:0.72em;">&plusmn;0.0030</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.3512 <span style="font-size:0.72em;">&plusmn;0.0009</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.1419 <span style="font-size:0.72em;">&plusmn;0.0008</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.2608 <span style="font-size:0.72em;">&plusmn;0.0010</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.7901 <span style="font-size:0.72em;">&plusmn;0.0008</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.7197 <span style="font-size:0.72em;">&plusmn;0.0011</span></td>
+          </tr>
+          <tr>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">+gca<sub>early</sub></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);"></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.2378 <span style="font-size:0.72em;">&plusmn;0.0011</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.3815 <span style="font-size:0.72em;">&plusmn;0.0018</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.1861 <span style="font-size:0.72em;">&plusmn;0.0035</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.2845 <span style="font-size:0.72em;">&plusmn;0.0027</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.7970 <span style="font-size:0.72em;">&plusmn;0.0018</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.7218 <span style="font-size:0.72em;">&plusmn;0.0026</span></td>
+          </tr>
+          <tr>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">+gca<sub>stack</sub></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);"></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.2410 <span style="font-size:0.72em;">&plusmn;0.0012</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.3800 <span style="font-size:0.72em;">&plusmn;0.0011</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.1994 <span style="font-size:0.72em;">&plusmn;0.0054</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.3035 <span style="font-size:0.72em;">&plusmn;0.0049</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.7937 <span style="font-size:0.72em;">&plusmn;0.0013</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.7252 <span style="font-size:0.72em;">&plusmn;0.0026</span></td>
+          </tr>
 
+          <tr><td colspan="8" style="padding:4px; border-bottom:1px solid var(--border);"></td></tr>
+
+          <tr>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">ABXI</td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">Beauty-Elec</td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.0730 <span style="font-size:0.72em;">&plusmn;0.0070</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.1724 <span style="font-size:0.72em;">&plusmn;0.0071</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.0548 <span style="font-size:0.72em;">&plusmn;0.0038</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.1273 <span style="font-size:0.72em;">&plusmn;0.0028</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.7216 <span style="font-size:0.72em;">&plusmn;0.0027</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.7123 <span style="font-size:0.72em;">&plusmn;0.0009</span></td>
+          </tr>
+          <tr>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">+gca<sub>early</sub></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);"></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.0727 <span style="font-size:0.72em;">&plusmn;0.0060</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.1793 <span style="font-size:0.72em;">&plusmn;0.0047</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.0544 <span style="font-size:0.72em;">&plusmn;0.0044</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.1244 <span style="font-size:0.72em;">&plusmn;0.0025</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.7410 <span style="font-size:0.72em;">&plusmn;0.0025</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.7169 <span style="font-size:0.72em;">&plusmn;0.0024</span></td>
+          </tr>
+          <tr>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">+gca<sub>stack</sub></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);"></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.0733 <span style="font-size:0.72em;">&plusmn;0.0042</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.1846 <span style="font-size:0.72em;">&plusmn;0.0057</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.0566 <span style="font-size:0.72em;">&plusmn;0.0052</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.1271 <span style="font-size:0.72em;">&plusmn;0.0042</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.7354 <span style="font-size:0.72em;">&plusmn;0.0048</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.6973 <span style="font-size:0.72em;">&plusmn;0.0051</span></td>
+          </tr>
+
+          <tr><td colspan="8" style="padding:4px; border-bottom:1px solid var(--border);"></td></tr>
+
+          <tr>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">ABXI</td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">Food-Kitch</td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);"><span class="pulse-highlight pulse-blue"><strong>0.0593 <span style="font-size:0.72em;">&plusmn;0.0074</span></strong></span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.1541 <span style="font-size:0.72em;">&plusmn;0.0130</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);"><span class="pulse-highlight pulse-red"><strong>0.0416 <span style="font-size:0.72em;">&plusmn;0.0058</span></strong></span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.1093 <span style="font-size:0.72em;">&plusmn;0.0113</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.7205 <span style="font-size:0.72em;">&plusmn;0.0015</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.7180 <span style="font-size:0.72em;">&plusmn;0.0032</span></td>
+          </tr>
+          <tr>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">+gca<sub>early</sub></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);"></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);"><span class="pulse-highlight pulse-blue"><strong>0.0703 <span style="font-size:0.72em;">&plusmn;0.0094</span></strong></span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.1757 <span style="font-size:0.72em;">&plusmn;0.0092</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);"><span class="pulse-highlight pulse-red"><strong>0.0548 <span style="font-size:0.72em;">&plusmn;0.0053</span></strong></span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.1327 <span style="font-size:0.72em;">&plusmn;0.0072</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.7317 <span style="font-size:0.72em;">&plusmn;0.0039</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.7150 <span style="font-size:0.72em;">&plusmn;0.0031</span></td>
+          </tr>
+          <tr>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">+gca<sub>stack</sub></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);"></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.0882 <span style="font-size:0.72em;">&plusmn;0.0052</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.1853 <span style="font-size:0.72em;">&plusmn;0.0013</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.0527 <span style="font-size:0.72em;">&plusmn;0.0020</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.1282 <span style="font-size:0.72em;">&plusmn;0.0028</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.7148 <span style="font-size:0.72em;">&plusmn;0.0026</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.6924 <span style="font-size:0.72em;">&plusmn;0.0009</span></td>
+          </tr>
+
+          <tr><td colspan="8" style="padding:4px; border-bottom:1px solid var(--border);"></td></tr>
+
+          <tr>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">CDSRNP</td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">Elec-Phone (1M)</td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.0499 <span style="font-size:0.72em;">&plusmn;0.0087</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.1170 <span style="font-size:0.72em;">&plusmn;0.0079</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.0920 <span style="font-size:0.72em;">&plusmn;0.0050</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.1935 <span style="font-size:0.72em;">&plusmn;0.0021</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">-</td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">-</td>
+          </tr>
+          <tr>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">+gca<sub>early</sub></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);"></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.0547 <span style="font-size:0.72em;">&plusmn;0.0010</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.1209 <span style="font-size:0.72em;">&plusmn;0.0092</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.0980 <span style="font-size:0.72em;">&plusmn;0.0010</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">0.1989 <span style="font-size:0.72em;">&plusmn;0.0031</span></td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">-</td>
+            <td style="padding:8px; border-bottom:1px solid var(--border);">-</td>
+          </tr>
+          <tr>
+            <td style="padding:8px;">+gca<sub>stack</sub></td>
+            <td style="padding:8px;"></td>
+            <td style="padding:8px;">0.0531 <span style="font-size:0.72em;">&plusmn;0.0078</span></td>
+            <td style="padding:8px;">0.1229 <span style="font-size:0.72em;">&plusmn;0.0125</span></td>
+            <td style="padding:8px;">0.0946 <span style="font-size:0.72em;">&plusmn;0.0022</span></td>
+            <td style="padding:8px;">0.1942 <span style="font-size:0.72em;">&plusmn;0.0012</span></td>
+            <td style="padding:8px;">-</td>
+            <td style="padding:8px;">-</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
+    <p class="small"><em>Table 1. NDCG and AUC comparison with the three baselines and GCA-augmented models. Elec stands for Electronic, and Kitch stands for Kitchen. GCA<sub>early</sub> denotes GCA[0], and GCA<sub>stack</sub> denotes stacked placements GCA[0, i<sub>1</sub>, i<sub>2</sub>, ..., i<sub>N</sub>] where i<sub>n</sub> &gt; 1. Across datasets, GCA improves NDCG@{1,10}, with GCA<sub>early</sub> providing up to <span class="pulse-highlight pulse-red"><strong>31%</strong></span> and GCA<sub>stack</sub> up to <span class="pulse-highlight pulse-blue"><strong>48%</strong></span> relative NDCG improvements, with mean gains of 8-12%.</em></p>
 
-
-    <h3>2. Orthogonal Alignment</h3>
-
-    <p>This work challenges this conventional view and uncovers a new, counter-intuitive mechanism of cross-attention.</p>
-
-    <div style="border: 2px solid; border-image: linear-gradient(90deg, #667eea, #8b9dc3) 1; margin: 20px 0; box-shadow: 0 3px 10px rgba(102, 126, 234, 0.08); overflow: hidden; padding: 0;">
-
-    <div style="background: linear-gradient(90deg, #667eea, #8b9dc3); color: white; padding: 12px 20px; font-weight: 600; font-size: 14px; margin: 0;">
-        A Co-Existence Observation in Multi-Modal Learning
-      </div>
-      <div style="padding: 10px; text-align: center;">
-        <strong><em>We argue that two contrasting alignment mechanisms are able to co-exist in cross attention:
-        <br><br>
-        1. Residual Alignment (conventional view)<br>
-        2. Orthogonal Alignment (our discovery)</em></strong>
-      </div>
-
-    </div>
-
-    <p>We define an Orthogonal Alignment Phenomenon as follows.</p>
-
-    <div style="border: 2px solid; border-image: linear-gradient(90deg, #667eea, #8b9dc3) 1; border-radius: 10px; padding: 20px; margin: 20px 0; box-shadow: 0 3px 10px rgba(102, 126, 234, 0.08); text-align: center;">
-
-    <p><strong>
-    <em>An Orthogonal Alignment is a phenomenon where the input query (<span style="color: #1f77b4;"><strong>X</strong></span>) and the output (<span style="color: #1f77b4;"><strong>X'</strong></span>) of the cross-attention are orthogonal, rather than simply reinforcing the existing pre-aligned features of <span style="color: #1f77b4;"><strong>X</strong></span> when updating to <span style="color: #1f77b4;"><strong>X'</strong></span>
-    </em></strong></p>
-
-    </div>
-
-    <p>Please refer to Figures 1(a) and 1(b) for a visual illustration of this phenomenon, contrasted with the conventional residual-alignment perspective.</p>
-
-    <!-- <h3>What is role of <span style="color: #d62728;"><strong>Y</strong></span> in Orthogonal Alignment?</h3>
-
-    <p>After reading the above definition of Orthogonal Alignment, a natural question arises: "Then, what is the role of <span style="color: #d62728;"><strong>Y</strong></span>?" </p>
-
-    <p>My interpretation is that the query <span style="color: #d62728;"><strong>Y</strong></span> functions as a guide that identifies which directions on the tangent space of <span style="color: #1f77b4;"><strong>X</strong></span> correspond to positive transfer signals. More concretely, consider the tangent space of <span style="color: #1f77b4;"><strong>X</strong></span>. Within this space, there exist multiple orthogonal directions—some leading to negative transfer, others contributing to positive transfer. In principle, all of these directions could serve as candidates for <span style="color: #1f77b4;"><strong>X′</strong></span>, since they are orthogonal to the original <span style="color: #1f77b4;"><strong>X</strong></span>. Then, the introduction of <span style="color: #d62728;"><strong>Y</strong></span> provides the crucial signal that distinguishes among these directions—indicating which orthogonal components are constructive (positive transfer) and should therefore be incorporated into <span style="color: #1f77b4;"><strong>X′</strong></span>.</p>
-
-    <p>Intuitively, <span style="color: #d62728;"><strong>Y</strong></span> acts as a directional filter that orients the orthogonal updates toward beneficial regions of the feature manifold, enabling cross-attention to expand representational capacity without amplifying redundant correlations.</p> -->
-
-    <h3>3.1. Experiment result 1: Orthogonal Alignment correlates with improving performance</h3>
-
-    <p>Empirically, we observe that the Gated Cross-Attention (GCA) module enhances recommendation performance by generating outputs that are not merely filtered versions of the input query (See Figure 2). 
-      In simple terms, GCA introduces a learnable gating mechanism that combines the input and the cross-attention output as 
-      <span style="color: #1f77b4;"><strong>X</strong></span> + α<span style="color: #1f77b4;"><strong>X'</strong></span>  where <span style="color: #1f77b4;"><strong>X'</strong></span> 
-      is the output of cross attention and α is a learnable parameter. This formulation allows the model to produce complementary representations—capturing aspects of the input query that were previously underrepresented or unseen (See Figure 1(d)).</p>
-
-    <p>We evaluated this effect using three recent Cross-Domain Sequential Recommendation (CDSR) models: LLM4CDSR¹, CDSRNP², and ABXI³ -- all of which are transformer-based architectures reported as state-of-the-art in their respective papers. In Figure 2, the evaluation metric NDCG@10 (Normalized Discounted Cumulative Gain at rank 10) measures how accurately each model ranks the top 10 items compared with the ground-truth order—that is, how well it predicts both which items should appear and in what order. The x-axis represents the absolute value of the cosine similarity between <span style="color: #1f77b4;"><strong>X</strong></span> and <span style="color: #1f77b4;"><strong>X′</strong></span> for both Domain A and Domain B, where the blue dots correspond to Domain A and the red dots correspond to Domain B.</p>
-
-    <p>To ensure robustness, we conducted experiments with multiple random initializations, several GCA architectural variants, and different datasets. Each configuration corresponds to one datapoint in the three subfigures below, and each point represents the best test results from its train process.</p>
-
-    <p>Overall, the results consistently demonstrate that the Orthogonal Alignment effect—induced by GCA—leads to model performance increases: <strong>Lower cosine similarity indicates stronger orthogonal alignment, which tends to correlate with higher NDCG@10</strong>.</p>
-
+    <h3>4.2. Observation 2 (main): orthogonality tracks performance</h3>
+    <p>The authors plot NDCG@10 against the absolute cosine similarity <code>|cos(X, X&#8242;)|</code>. Across datasets and backbones, the dominant pattern is a <strong>negative correlation</strong>: lower similarity (more orthogonal updates) is associated with better ranking quality.</p>
+    <p>This is the empirical heart of the paper: GCA is not only an extra attention block, but a mechanism that consistently encourages complementary directions in representation space.</p>
     <div align="center">
 
     <p><table>
@@ -260,41 +505,14 @@ pre{padding:12px;overflow:auto;}
     </div>
 
 
-    
-    
-    
-    <h3>3.2. Experiment result 2: Orthogonal Alignment improves scaling law</h3>
-
-    <p>Crucially, we classify orthogonal alignment as a <strong>phenomenon</strong> because we empirically show that it <strong>emerges naturally</strong>, without requiring <strong>ANY</strong> explicit orthogonality regularization in either:  Loss formulation or Model architecture. 
-      So why this pheomena just naturally happens? 
-    </p>
-    <p>
-      This is where this works' main contribution comes from.
-    </p>
-
-    <p>We argue that this phenomenon improves scaling law in multi-modal model (tested on recommendation data):</p>
-
-    <div style="border: 2px solid; border-image: linear-gradient(90deg, #667eea, #8b9dc3) 1; border-radius: 10px; padding: 20px; margin: 20px 0; box-shadow: 0 3px 10px rgba(102, 126, 234, 0.08); text-align: center;">
-
-    <p><strong><em>Hypothesis: Orthogonal Alignment improves scaling law in multi-modal model.</em></strong></p>
-
-    </div>
-
-    <p>So, intuitively, why does making the input and output orthogonal improve scaling laws? 
-      In simple terms, we interpret this as follows: by ensuring that updates occupy a subspace orthogonal to the input query, the model gains new representational capacity without needing more parameters.</p>
-
-    <p>To verify this hypothesis, we compare two model types:</p>
+    <h3>4.3. Observation 3 (main): orthogonal alignment is parameter-efficient</h3>
+    <p>To explain why this phenomenon emerges naturally, the paper compares:</p>
     <ol>
-      <li>Baseline + GCA module</li>
-      <li>Parameter-augmented baseline (simply increasing parameters)</li>
+      <li>Baseline + GCA</li>
+      <li>Parameter-matched baseline scaling (same total parameter budget)</li>
     </ol>
-
-    <p>For instance, suppose the baseline model has 2M parameters and the GCA module adds 0.5M, so the [Baseline + GCA] module has 2.5M parameters. 
-      To make the comparison fair, we also evaluate a [parameter-augmented baseline] with 2.5M parameters—that is, we scale up the 2M baseline to 2.5M by increasing the hidden size, etc., to match the total parameter count of the [Baseline + GCA] module. </p>
-
-    <p><strong>In summary, We observed that the [Baseline + GCA] consistently outperformed the [parameter-augmented baseline], demonstrating that the performance gain comes from orthogonal alignment rather than mere model scaling</strong> (see Figure 3).</p>
-
-    <p>In Figure 3, [Baseline + GCA]<sub>early</sub> refers to inserting a single GCA module at the early stage of the model, while [Baseline + GCA]<sub>stack</sub> denotes stacking multiple GCA modules vertically throughout the network—from early to later layers.</p>
+    <p>Across five test settings, GCA-augmented models outperform parameter-matched baselines, supporting the interpretation that orthogonal subspace usage improves accuracy per parameter (reported around <strong>1.4x</strong> efficiency in the paper's framing).</p>
+    <p>In LLM4CDSR, early GCA is especially effective, consistent with the idea that simply widening the baseline can saturate when representational degrees of freedom are constrained.</p>
 
     <div align="center">
 
@@ -339,35 +557,238 @@ pre{padding:12px;overflow:auto;}
 
     </div>
 
-    <p>More specifically, our results show that across all five experimental cases, the addition of baseline with GCA_early consistently yields higher single-domain ranking performance (Domain A's NDCG@10) compared to parameter-matched baselines, while Domain B's NDCG@10 also shows general improvement.</p>
+    <h3>4.4. Observation 4: robustness to input-domain similarity</h3>
+    <p>The paper checks whether orthogonalization is just a side effect of query-key similarity. It is not: while <code>|cos(X, X<sub>A+B</sub>)|</code> varies across models and datasets, <code>|cos(X, X&#8242;)|</code> stays in a relatively stable low range. This suggests GCA consistently decouples updates from the query to extract complementary information.</p>
+    <div align="center">
+      <p><table>
+          <tr>
+            <td align="center">
+              <img src="./cosine_similarity_boxplot_cdsrnp.png" alt="Cosine similarity boxplot for CDSRNP" width="240">
+              <br>
+              <em>(a) CDSRNP</em>
+            </td>
+            <td align="center">
+              <img src="./cosine_similarity_boxplot_abxi.png" alt="Cosine similarity boxplot for ABXI" width="240">
+              <br>
+              <em>(b) ABXI</em>
+            </td>
+            <td align="center">
+              <img src="./cosine_similarity_boxplot_llm4cdsr.png" alt="Cosine similarity boxplot for LLM4CDSR" width="240">
+              <br>
+              <em>(c) LLM4CDSR</em>
+            </td>
+          </tr>
+        </table>
+        <em>Figure 4. Boxplots of cosine similarities <code>|cos(X<sub>&diamond;</sub>, X<sub>A+B</sub>)|</code> and <code>|cos(X<sub>&diamond;</sub>, X<sub>&diamond;</sub>&#8242;)|</code>, where <code>&diamond; &isin; {A, B}</code>. While <code>|cos(X<sub>&diamond;</sub>, X<sub>&diamond;</sub>&#8242;)|</code> remains stable (median approximately in [0.1, 0.2]), <code>|cos(X<sub>&diamond;</sub>, X<sub>A+B</sub>)|</code> varies substantially, highlighting that GCA induces a consistent degree of orthogonalization regardless of underlying <code>X<sub>&diamond;</sub></code> (query)-<code>X<sub>A+B</sub></code> (key, value) similarity. <code>&mu;</code> denotes a mean.</em></p>
+    </div>
 
-    <p>Moreover, in both LLM4CDSR settings, GCA<sub>early</sub> demonstrates the strongest parameter efficiency. We attribute this advantage to the fixed hidden dimensionality of the initial embedding vectors inherited from the pretrained LLM, which constrains the representational capacity of the baseline model. As a result, simply scaling up the baseline parameters eventually leads to performance saturation—and in some cases, degradation—as model size increases.</p>
-    
-    
-    <h3>4. Concluding remark: Toward vision–language generalization</h3>
-
-    <p>We remain cautious about generalizing our findings to vision–language models, since all of our experiments on Orthogonal Alignment were conducted exclusively with recommendation data. Nonetheless, we are optimistic that similar phenomena could emerge in vision–language settings, given that our study also relies on transformer architectures with gated cross-attention—a core component in many multi-modal models.</p>
-
-    <p>The key distinctions between our setting and typical vision–language architectures are as follows:</p>
-
+    <h3>4.5. Ablation: Causality</h3>
+    <p>Two ablations support a causal role for orthogonality:</p>
     <ul>
-      <li><p>Our observations of orthogonal alignment were made using recommendation data, where encoder representations were not pre-aligned.</p></li>
-      <li><p>Vision–language models, in contrast, generally employ pretrained image and text encoders that produce highly aligned representations by design.</p></li>
+      <li><strong>Projection ablation:</strong> keeping only the orthogonal component of the update hurts less than keeping only the parallel component.</li>
+      <li><strong>Orthogonality regularization:</strong> explicitly encouraging orthogonality improves ranking metrics across domains.</li>
     </ul>
+    <p>Together, these results support the interpretation that orthogonal components carry more of the useful transfer signal.</p>
+    <div style="overflow-x: auto; border: 1px solid var(--border); border-radius: 12px; padding: 8px; background: var(--box); margin: 16px 0 8px 0; font-size: 0.78rem; line-height: 1.28;">
+      <table style="width: 100%; border-collapse: collapse; min-width: 980px;">
+        <thead>
+          <tr>
+            <th style="text-align:left; padding:8px; border-bottom:1px solid var(--border);">Model</th>
+            <th style="text-align:left; padding:8px; border-bottom:1px solid var(--border);">Dataset (A-B)</th>
+            <th style="text-align:left; padding:8px; border-bottom:1px solid var(--border);">NDCG@1<sub>A</sub></th>
+            <th style="text-align:left; padding:8px; border-bottom:1px solid var(--border);">NDCG@1<sub>A</sub> w. X&#8242; &rarr; X&#8242;<sub>&parallel;</sub></th>
+            <th style="text-align:left; padding:8px; border-bottom:1px solid var(--border);">NDCG@1<sub>A</sub> w. X&#8242; &rarr; X&#8242;<sub>&perp;</sub></th>
+            <th style="text-align:left; padding:8px; border-bottom:1px solid var(--border);">NDCG@1<sub>A</sub> w. +L<sub>ortho</sub></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td style="padding:8px; border-bottom:1px solid var(--border);">LLM4CDSR</td><td style="padding:8px; border-bottom:1px solid var(--border);">Cloth-Sport</td><td style="padding:8px; border-bottom:1px solid var(--border);">0.7157 <span style="font-size:0.72em;">&plusmn;0.0025</span></td><td style="padding:8px; border-bottom:1px solid var(--border);">-</td><td style="padding:8px; border-bottom:1px solid var(--border);">-</td><td style="padding:8px; border-bottom:1px solid var(--border);">-</td></tr>
+          <tr><td style="padding:8px; border-bottom:1px solid var(--border);">+gca<sub>early</sub></td><td style="padding:8px; border-bottom:1px solid var(--border);"></td><td style="padding:8px; border-bottom:1px solid var(--border);"><span class="pulse-highlight pulse-yellow">0.7283 <span style="font-size:0.72em;">&plusmn;0.0027</span></span></td><td style="padding:8px; border-bottom:1px solid var(--border);">0.7193 <span style="font-size:0.72em;">&plusmn;0.0041</span></td><td style="padding:8px; border-bottom:1px solid var(--border);">0.7231 <span style="font-size:0.72em;">&plusmn;0.0004</span></td><td style="padding:8px; border-bottom:1px solid var(--border);"><span class="pulse-highlight pulse-yellow"><strong>0.7313 <span style="font-size:0.72em;">&plusmn;0.0004</span></strong></span></td></tr>
+          <tr><td style="padding:8px; border-bottom:1px solid var(--border);">+gca<sub>stack</sub></td><td style="padding:8px; border-bottom:1px solid var(--border);"></td><td style="padding:8px; border-bottom:1px solid var(--border);"><span class="pulse-highlight pulse-yellow">0.7310 <span style="font-size:0.72em;">&plusmn;0.0012</span></span></td><td style="padding:8px; border-bottom:1px solid var(--border);">0.7213 <span style="font-size:0.72em;">&plusmn;0.0021</span></td><td style="padding:8px; border-bottom:1px solid var(--border);">0.7298 <span style="font-size:0.72em;">&plusmn;0.0031</span></td><td style="padding:8px; border-bottom:1px solid var(--border);"><span class="pulse-highlight pulse-yellow"><strong>0.7392 <span style="font-size:0.72em;">&plusmn;0.0031</span></strong></span></td></tr>
+          <tr><td style="padding:8px; border-bottom:1px solid var(--border);">LLM4CDSR</td><td style="padding:8px; border-bottom:1px solid var(--border);">Elec-Phone</td><td style="padding:8px; border-bottom:1px solid var(--border);">0.2101 <span style="font-size:0.72em;">&plusmn;0.0030</span></td><td style="padding:8px; border-bottom:1px solid var(--border);">-</td><td style="padding:8px; border-bottom:1px solid var(--border);">-</td><td style="padding:8px; border-bottom:1px solid var(--border);">-</td></tr>
+          <tr><td style="padding:8px; border-bottom:1px solid var(--border);">+gca<sub>early</sub></td><td style="padding:8px; border-bottom:1px solid var(--border);"></td><td style="padding:8px; border-bottom:1px solid var(--border);"><span class="pulse-highlight pulse-yellow">0.2378 <span style="font-size:0.72em;">&plusmn;0.0011</span></span></td><td style="padding:8px; border-bottom:1px solid var(--border);">0.2012 <span style="font-size:0.72em;">&plusmn;0.0051</span></td><td style="padding:8px; border-bottom:1px solid var(--border);">0.2321 <span style="font-size:0.72em;">&plusmn;0.0044</span></td><td style="padding:8px; border-bottom:1px solid var(--border);"><span class="pulse-highlight pulse-yellow"><strong>0.2438 <span style="font-size:0.72em;">&plusmn;0.0031</span></strong></span></td></tr>
+          <tr><td style="padding:8px; border-bottom:1px solid var(--border);">+gca<sub>stack</sub></td><td style="padding:8px; border-bottom:1px solid var(--border);"></td><td style="padding:8px; border-bottom:1px solid var(--border);"><span class="pulse-highlight pulse-yellow">0.2410 <span style="font-size:0.72em;">&plusmn;0.0012</span></span></td><td style="padding:8px; border-bottom:1px solid var(--border);">0.2201 <span style="font-size:0.72em;">&plusmn;0.0032</span></td><td style="padding:8px; border-bottom:1px solid var(--border);">0.2377 <span style="font-size:0.72em;">&plusmn;0.0041</span></td><td style="padding:8px; border-bottom:1px solid var(--border);"><span class="pulse-highlight pulse-yellow"><strong>0.2481 <span style="font-size:0.72em;">&plusmn;0.0003</span></strong></span></td></tr>
+          <tr><td style="padding:8px; border-bottom:1px solid var(--border);">ABXI</td><td style="padding:8px; border-bottom:1px solid var(--border);">Beauty-Elec</td><td style="padding:8px; border-bottom:1px solid var(--border);">0.0730 <span style="font-size:0.72em;">&plusmn;0.0070</span></td><td style="padding:8px; border-bottom:1px solid var(--border);">-</td><td style="padding:8px; border-bottom:1px solid var(--border);">-</td><td style="padding:8px; border-bottom:1px solid var(--border);">-</td></tr>
+          <tr><td style="padding:8px; border-bottom:1px solid var(--border);">+gca<sub>early</sub></td><td style="padding:8px; border-bottom:1px solid var(--border);"></td><td style="padding:8px; border-bottom:1px solid var(--border);"><span class="pulse-highlight pulse-yellow">0.0727 <span style="font-size:0.72em;">&plusmn;0.0060</span></span></td><td style="padding:8px; border-bottom:1px solid var(--border);">0.0653 <span style="font-size:0.72em;">&plusmn;0.0042</span></td><td style="padding:8px; border-bottom:1px solid var(--border);">0.0691 <span style="font-size:0.72em;">&plusmn;0.0030</span></td><td style="padding:8px; border-bottom:1px solid var(--border);"><span class="pulse-highlight pulse-yellow"><strong>0.0747 <span style="font-size:0.72em;">&plusmn;0.0029</span></strong></span></td></tr>
+          <tr><td style="padding:8px; border-bottom:1px solid var(--border);">+gca<sub>stack</sub></td><td style="padding:8px; border-bottom:1px solid var(--border);"></td><td style="padding:8px; border-bottom:1px solid var(--border);"><span class="pulse-highlight pulse-yellow">0.0733 <span style="font-size:0.72em;">&plusmn;0.0042</span></span></td><td style="padding:8px; border-bottom:1px solid var(--border);">0.0611 <span style="font-size:0.72em;">&plusmn;0.0028</span></td><td style="padding:8px; border-bottom:1px solid var(--border);">0.0701 <span style="font-size:0.72em;">&plusmn;0.0019</span></td><td style="padding:8px; border-bottom:1px solid var(--border);"><span class="pulse-highlight pulse-yellow"><strong>0.0751 <span style="font-size:0.72em;">&plusmn;0.0032</span></strong></span></td></tr>
+          <tr><td style="padding:8px; border-bottom:1px solid var(--border);">ABXI</td><td style="padding:8px; border-bottom:1px solid var(--border);">Food-Kitch</td><td style="padding:8px; border-bottom:1px solid var(--border);">0.0593 <span style="font-size:0.72em;">&plusmn;0.0074</span></td><td style="padding:8px; border-bottom:1px solid var(--border);">-</td><td style="padding:8px; border-bottom:1px solid var(--border);">-</td><td style="padding:8px; border-bottom:1px solid var(--border);">-</td></tr>
+          <tr><td style="padding:8px; border-bottom:1px solid var(--border);">+gca<sub>early</sub></td><td style="padding:8px; border-bottom:1px solid var(--border);"></td><td style="padding:8px; border-bottom:1px solid var(--border);"><span class="pulse-highlight pulse-yellow">0.0703 <span style="font-size:0.72em;">&plusmn;0.0094</span></span></td><td style="padding:8px; border-bottom:1px solid var(--border);">0.0511 <span style="font-size:0.72em;">&plusmn;0.0044</span></td><td style="padding:8px; border-bottom:1px solid var(--border);">0.0654 <span style="font-size:0.72em;">&plusmn;0.0051</span></td><td style="padding:8px; border-bottom:1px solid var(--border);"><span class="pulse-highlight pulse-yellow"><strong>0.0709 <span style="font-size:0.72em;">&plusmn;0.0025</span></strong></span></td></tr>
+          <tr><td style="padding:8px; border-bottom:1px solid var(--border);">+gca<sub>stack</sub></td><td style="padding:8px; border-bottom:1px solid var(--border);"></td><td style="padding:8px; border-bottom:1px solid var(--border);"><span class="pulse-highlight pulse-yellow">0.0882 <span style="font-size:0.72em;">&plusmn;0.0052</span></span></td><td style="padding:8px; border-bottom:1px solid var(--border);">0.0698 <span style="font-size:0.72em;">&plusmn;0.0061</span></td><td style="padding:8px; border-bottom:1px solid var(--border);">0.0819 <span style="font-size:0.72em;">&plusmn;0.0009</span></td><td style="padding:8px; border-bottom:1px solid var(--border);"><span class="pulse-highlight pulse-yellow"><strong>0.0931 <span style="font-size:0.72em;">&plusmn;0.0041</span></strong></span></td></tr>
+          <tr><td style="padding:8px; border-bottom:1px solid var(--border);">CDSRNP</td><td style="padding:8px; border-bottom:1px solid var(--border);">Elec-Phone (1M)</td><td style="padding:8px; border-bottom:1px solid var(--border);">0.0499 <span style="font-size:0.72em;">&plusmn;0.0087</span></td><td style="padding:8px; border-bottom:1px solid var(--border);">-</td><td style="padding:8px; border-bottom:1px solid var(--border);">-</td><td style="padding:8px; border-bottom:1px solid var(--border);">-</td></tr>
+          <tr><td style="padding:8px; border-bottom:1px solid var(--border);">+gca<sub>early</sub></td><td style="padding:8px; border-bottom:1px solid var(--border);"></td><td style="padding:8px; border-bottom:1px solid var(--border);"><span class="pulse-highlight pulse-yellow">0.0547 <span style="font-size:0.72em;">&plusmn;0.0010</span></span></td><td style="padding:8px; border-bottom:1px solid var(--border);">0.0410 <span style="font-size:0.72em;">&plusmn;0.0031</span></td><td style="padding:8px; border-bottom:1px solid var(--border);">0.0511 <span style="font-size:0.72em;">&plusmn;0.0041</span></td><td style="padding:8px; border-bottom:1px solid var(--border);"><span class="pulse-highlight pulse-yellow"><strong>0.0551 <span style="font-size:0.72em;">&plusmn;0.0005</span></strong></span></td></tr>
+          <tr><td style="padding:8px;">+gca<sub>stack</sub></td><td style="padding:8px;"></td><td style="padding:8px;"><span class="pulse-highlight pulse-yellow">0.0531 <span style="font-size:0.72em;">&plusmn;0.0078</span></span></td><td style="padding:8px;">0.0391 <span style="font-size:0.72em;">&plusmn;0.0069</span></td><td style="padding:8px;">0.0478 <span style="font-size:0.72em;">&plusmn;0.0009</span></td><td style="padding:8px;"><span class="pulse-highlight pulse-yellow"><strong>0.0587 <span style="font-size:0.72em;">&plusmn;0.0051</span></strong></span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="small"><em>Table 2. Ablation study. "w." denotes "with". Results from projection ablations and orthogonality regularization support the interpretation that orthogonal alignment contributes to the observed performance gains. The improvement from <span class="pulse-highlight pulse-yellow"><u>NDCG@1<sub>A</sub></u></span> to <span class="pulse-highlight pulse-yellow"><strong><u>NDCG@1<sub>A</sub> + L<sub>ortho</sub></u></strong></span> in the ablation study provides evidence supporting that orthogonal alignment causally contributes to performance gains.</em></p>
 
-    <p>This difference matters because most vision–language encoders are trained using self-contrastive objectives, which explicitly encourage high cosine similarity between matching image–text pairs and low similarity between mismatched ones. As a result, their latent representations are already well-aligned before cross-attention is applied—potentially making orthogonal alignment less pronounced or more difficult to observe directly.</p>
+    <h3>5. Theoretical analysis (pages 7-9)</h3>
+    <p>This section justifies why GCA improves recommendation by injecting complementary information beyond the query span. We use the same notation as the main model, with \(\diamond\in\{A,B\}\), and LayerNorm without affine rescaling \(\mathrm{LN}(v)=\sqrt d\,Cv/\|Cv\|\).</p>
+    <p>Flattening token indices, let \(x\in\mathbb R^d\) be a token of \(X_\diamond\), and \(u\in\mathbb R^d\) the branch update entering LayerNorm. Define:</p>
+    \[
+    C=I_d-d^{-1}\mathbf1\mathbf1^\top,\quad \tilde x=Cx,\quad \tilde u=Cu,\quad
+    P_x=\frac{\tilde x\tilde x^\top}{\|\tilde x\|^2},\quad
+    \tilde u_\parallel=P_x\tilde u,\quad
+    \tilde u_\perp=(I-P_x)\tilde u.
+    \]
+    <p>Hence \(\tilde u_\perp\) is the update component orthogonal to the centered query direction. The empirical statistic \(|\cos(X_\diamond,X'_\diamond)|\) serves as a sequence-level proxy for \(\|\tilde u_\parallel\|/\|\tilde u\|\): lower cosine implies larger complementary (orthogonal) fraction.</p>
+    <p><strong>Connection to observations:</strong> Theorem 1 explains why \(X'_\diamond\) is driven away from \(X_\diamond\) (Observation 2). Theorem 2 gives the local causal mechanism behind projection and regularization ablations. Theorem 3 extends this to finite-sample bounds and parameter efficiency (Observation 3).</p>
 
-    <p>Therefore, while we expect Orthogonal Alignment to exist in vision–language models, it may manifest under more subtle and nuanced conditions, reflecting the already pre-aligned nature of their learned embeddings.</p>
+    <div style="margin:16px 0; border:1px solid var(--border); border-radius:12px; overflow:hidden; box-shadow:0 8px 20px rgba(102,126,234,0.10);">
+      <div style="background:linear-gradient(90deg,#667eea,#8b9dc3); color:#fff; padding:10px 14px; font-weight:700;">Theorem 1 — Residual-LayerNorm geometry selects the orthogonal component</div>
+      <div style="padding:14px 16px; background:var(--box);">
+        <p>For \(\tilde x\neq 0\), sufficiently small \(\eta\), and any \(u\in\mathbb R^d\), the expansion is:</p>
+        <div style="padding:8px 10px; border-left:3px solid #8b9dc3; background:rgba(102,126,234,0.06); border-radius:6px;">
+          \[
+          \mathrm{LN}(x+\eta u)-\mathrm{LN}(x)
+          =\eta\frac{\sqrt d}{\|\tilde x\|}\tilde u_\perp
+          -\eta^2\frac{\sqrt d}{\|\tilde x\|^2}
+          \left(
+          \frac{\|\tilde u_\perp\|^2}{2}\frac{\tilde x}{\|\tilde x\|}
+          +\frac{\langle\tilde u_\parallel,\tilde x\rangle}{\|\tilde x\|}\tilde u_\perp
+          \right)
+          +O\!\left(\eta^3\frac{\|\tilde u\|^3}{\|\tilde x\|^3}\right).
+          \]
+          \[
+          D\mathrm{LN}_x[u]=\frac{\sqrt d}{\|\tilde x\|}\tilde u_\perp,\qquad
+          D\mathrm{LN}_x[v]=0\ \text{if }Cv\in\mathrm{span}(\tilde x).
+          \]
+        </div>
+        <p style="margin-bottom:0;"><strong>Implication.</strong> Parallel (residual-aligned) updates are first-order invisible after residual + LN, while orthogonal updates produce first-order angular displacement \(\sqrt d\,\|\tilde u_\perp\|/\|\tilde x\|\). This explains why orthogonality can emerge without explicit orthogonality constraints.</p>
+      </div>
+    </div>
+
+    <div style="margin:16px 0; border:1px solid var(--border); border-radius:12px; overflow:hidden; box-shadow:0 8px 20px rgba(102,126,234,0.10);">
+      <div style="background:linear-gradient(90deg,#667eea,#8b9dc3); color:#fff; padding:10px 14px; font-weight:700;">Theorem 2 — Causal loss decrease from orthogonal intervention</div>
+      <div style="padding:14px 16px; background:var(--box);">
+        <p>With pairwise ranking risk \(\mathcal L(h)=\mathcal R_\xi(h)\), gradient \(g=\nabla_h\mathcal L(h)\), \(u_c=Cu\), \(u_\perp=P_x^\perp u_c\), \(u_\parallel=P_xu_c\), define interventions:</p>
+        <div style="padding:8px 10px; border-left:3px solid #8b9dc3; background:rgba(102,126,234,0.06); border-radius:6px;">
+          \[
+          h_\perp(\alpha)=\mathrm{LN}(x+\alpha u_\perp),\qquad
+          h_\parallel(\alpha)=\mathrm{LN}(x+\alpha u_\parallel).
+          \]
+        </div>
+        <p>Assuming local smoothness constants \(\rho_x,\beta_x>0\), for \(|\alpha|\le \rho_x\):</p>
+        <div style="padding:8px 10px; border-left:3px solid #8b9dc3; background:rgba(102,126,234,0.06); border-radius:6px;">
+          \[
+          \mathcal L(h_\perp(\alpha))
+          \le
+          \mathcal L(h)
+          +\alpha\frac{\sqrt d}{\|Cx\|}\langle g,u_\perp\rangle
+          +\frac{\beta_x d}{2\|Cx\|^2}\alpha^2\|u_\perp\|^2,
+          \]
+          \[
+          \inf_{\alpha\in\mathbb R}\mathcal L(h_\perp(\alpha))
+          \le
+          \mathcal L(h)-\frac{\langle -g,u_\perp\rangle_+^2}{2\beta_x\|u_\perp\|^2}
+          +O\!\left(\frac{\langle -g,u_\perp\rangle_+^3}{\beta_x^2\|u_\perp\|^3}\right).
+          \]
+        </div>
+        <p style="margin-bottom:0;">By contrast, if \(u_\parallel=c\tilde x\) and \(1+\alpha c>0\), then \(\mathcal L(h_\parallel(\alpha))=\mathcal L(h)\) under non-affine LN. <strong>Implication:</strong> when \(\langle -g,u_\perp\rangle>0\), orthogonal-only intervention is strictly better than both no-update and parallel-only intervention, matching projection-ablation results.</p>
+      </div>
+    </div>
+
+    <div style="margin:16px 0; border:1px solid var(--border); border-radius:12px; overflow:hidden; box-shadow:0 8px 20px rgba(102,126,234,0.10);">
+      <div style="background:linear-gradient(90deg,#667eea,#8b9dc3); color:#fff; padding:10px 14px; font-weight:700;">Theorem 3 — Orthogonal alignment tightens finite-sample bounds</div>
+      <div style="padding:14px 16px; background:var(--box);">
+        <p>Assume local linearization over orthogonal blocks \(\phi_S(Z)\in\mathbb R^{p_S}\), \(\phi_T(Z)\in\mathbb R^r\):</p>
+        <div style="padding:8px 10px; border-left:3px solid #8b9dc3; background:rgba(102,126,234,0.06); border-radius:6px;">
+          \[
+          f^*(Z)=\langle w_S^*,\phi_S(Z)\rangle+\langle w_T^*,\phi_T(Z)\rangle,\quad
+          \mathbb E[\phi_S\phi_T^\top]=0,\quad w_T^*\neq 0.
+          \]
+        </div>
+        <p>Compare the parameter-matched residual class \(\mathcal H_{S,\mathrm{pm}}\) and the GCA class \(\mathcal H_{S,T}\). Let \(\Delta_{S,\mathrm{pm}}:=\inf_{f\in\mathcal H_{S,\mathrm{pm}}}\{\mathcal R(f)-\mathcal R(f^*)\}\), \(\underline\Delta_T:=\frac{\mu}{2}\mathbb E[\langle w_T^*,\phi_T(X)\rangle^2]\). Then \(\Delta_{S,\mathrm{pm}}\ge \underline\Delta_T\), and with probability \(1-\delta\):</p>
+        <div style="padding:8px 10px; border-left:3px solid #8b9dc3; background:rgba(102,126,234,0.06); border-radius:6px;">
+          \[
+          \mathcal R(\hat f_{S,\mathrm{pm}})-\mathcal R(f^*)
+          \le
+          \Delta_{S,\mathrm{pm}}+2LB_S\sqrt{\frac{\mathrm{tr}(\Sigma_{S,\mathrm{pm}})}{n}}+c_\delta n^{-1/2},
+          \]
+          \[
+          \mathcal R(\hat f_{S,T})-\mathcal R(f^*)
+          \le
+          2L\sqrt{\frac{B_S^2\mathrm{tr}(\Sigma_S)+B_T^2\mathrm{tr}(\Sigma_T)}{n}}+c_\delta n^{-1/2}.
+          \]
+        </div>
+        <p style="margin-bottom:0;">Therefore the GCA bound is tighter whenever the residual class cannot close the orthogonal approximation gap. <strong>Implication:</strong> with the same \(p_S+r\) coefficients, residual lifting stays in the query subspace, while GCA spends extra coordinates on orthogonal predictive blocks; the gain is from subspace allocation, not raw parameter count.</p>
+      </div>
+    </div>
+
+    <h3>6. Practical takeaway and scope</h3>
+    <p>This paper reframes cross-attention design in CDSR: from only "align and denoise" toward "inject complementary orthogonal information." It also argues this is a plausible reason GCA improves accuracy per parameter.</p>
+    <p>The stated limitation is scope: the core evidence is in recommendation settings, so broader claims to other modalities should be treated as a direction for follow-up, not as a universal conclusion.</p>
+
+    <div style="border: 2px solid; border-image: linear-gradient(90deg, #667eea, #8b9dc3) 1; border-radius: 10px; padding: 20px; margin: 20px 0; box-shadow: 0 3px 10px rgba(102, 126, 234, 0.08); text-align: center;">
+      <p><strong><em>Bottom line:</em></strong> gated cross-attention helps not only by filtering, but by discovering complementary orthogonal directions that improve ranking and parameter efficiency.</p>
+    </div>
 
     <hr>
 
-    <p><strong>References:</strong></p>
-
-    <p>¹ LLM4CDSR: Liu, Qidong, et al. "Bridge the Domains: Large Language Models Enhanced Cross-domain Sequential Recommendation." Proceedings of the 48th International ACM SIGIR Conference on Research and Development in Information Retrieval. 2025. </p>
-
-    <p>² CDSRNP: Li, Haipeng, et al. "Cross-Domain Sequential Recommendation via Neural Process." a preprint server preprint a preprint server:2410.13588 (2024).</p>
-
-    <p>³ ABXI: Bian, Qingtian, et al. "ABXI: invariant interest adaptation for task-guided cross-domain sequential recommendation." Proceedings of the ACM on Web Conference. 2025.</p>
+    <p><strong>Note:</strong> This summary is written from the main paper content (pages 1-9). Figure placeholders are intentionally marked as TODO for manual insertion.</p>
   </div>
+<script>
+  (function () {
+    const progress = document.getElementById('scroll-progress');
+    const backToTop = document.getElementById('back-to-top');
+    const tocLinks = document.getElementById('toc-links');
+    const headings = Array.from(document.querySelectorAll('.container h2, .container h3'));
+
+    // Stable ids for TOC linking
+    headings.forEach((h, i) => {
+      if (!h.id) {
+        const slug = h.textContent.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+        h.id = slug || `section-${i + 1}`;
+      }
+      const a = document.createElement('a');
+      a.href = `#${h.id}`;
+      a.textContent = h.textContent.replace(/\s+/g, ' ').trim();
+      if (h.tagName === 'H3') a.classList.add('h3');
+      tocLinks.appendChild(a);
+    });
+
+    const tocAnchors = Array.from(tocLinks.querySelectorAll('a'));
+    function updateTocActive() {
+      let activeId = headings[0] ? headings[0].id : null;
+      for (const h of headings) {
+        const rect = h.getBoundingClientRect();
+        if (rect.top <= 140) activeId = h.id;
+      }
+      tocAnchors.forEach(a => a.classList.toggle('active', a.getAttribute('href') === `#${activeId}`));
+    }
+
+    function updateScrollUi() {
+      const doc = document.documentElement;
+      const total = doc.scrollHeight - doc.clientHeight;
+      const scrolled = total > 0 ? (doc.scrollTop / total) * 100 : 0;
+      progress.style.width = `${Math.min(100, Math.max(0, scrolled))}%`;
+      backToTop.classList.toggle('show', doc.scrollTop > 480);
+      updateTocActive();
+    }
+    window.addEventListener('scroll', updateScrollUi, { passive: true });
+    updateScrollUi();
+
+    backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+    // Reveal on scroll
+    const revealTargets = Array.from(
+      document.querySelectorAll('.container h2, .container h3, .container p, .container ul, .container ol, .container table, .container video, .container .box, .container > div')
+    );
+    revealTargets.forEach(el => el.classList.add('reveal'));
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            io.unobserve(entry.target);
+          }
+        });
+      }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
+      revealTargets.forEach(el => io.observe(el));
+    } else {
+      revealTargets.forEach(el => el.classList.add('is-visible'));
+    }
+  })();
+</script>
 </body>
 </html>
